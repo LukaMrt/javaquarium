@@ -1,10 +1,10 @@
-package fr.lukam.test.model.systems;
+package fr.lukam.javaquarium.model.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import fr.lukam.test.model.components.ReproducerComponent;
-import fr.lukam.test.model.systems.computers.ReproduceComputer;
+import fr.lukam.javaquarium.model.components.ReproducerComponent;
+import fr.lukam.javaquarium.model.systems.computers.ReproduceComputer;
 
 public class ReproduceSystem extends IteratingSystem {
 

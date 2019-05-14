@@ -1,10 +1,14 @@
-package fr.lukam.test.model.systems;
+package fr.lukam.javaquarium.model.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import fr.lukam.javaquarium.model.components.AgeComponent;
+import fr.lukam.javaquarium.model.components.EatenComponent;
+import fr.lukam.javaquarium.model.components.HealthComponent;
+import fr.lukam.javaquarium.model.components.SpeciesComponent;
 import fr.lukam.test.model.components.*;
-import fr.lukam.test.model.entityadders.SeaweedAdder;
+import fr.lukam.javaquarium.model.entityadders.SeaweedAdder;
 
 public class UpdateSystem extends IteratingSystem {
 

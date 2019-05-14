@@ -1,9 +1,9 @@
-package fr.lukam.test.model;
+package fr.lukam.javaquarium.model;
 
 import com.badlogic.ashley.core.Engine;
-import fr.lukam.test.model.components.SexComponent;
-import fr.lukam.test.model.components.SpeciesComponent;
-import fr.lukam.test.model.entityadders.FishAdder;
+import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.SexComponent;
+import fr.lukam.javaquarium.model.entityadders.FishAdder;
 
 import java.io.IOException;
 import java.util.Scanner;

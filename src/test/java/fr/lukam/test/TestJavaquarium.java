@@ -1,15 +1,15 @@
 package fr.lukam.test;
 
 import com.badlogic.ashley.core.Engine;
-import fr.lukam.test.model.components.*;
-import fr.lukam.test.model.entityadders.FishAdder;
-import fr.lukam.test.model.entityadders.SeaweedAdder;
-import fr.lukam.test.model.fishes.Carpe;
-import fr.lukam.test.model.fishes.Merou;
-import fr.lukam.test.model.fishes.Sole;
-import fr.lukam.test.model.systems.EatSystem;
-import fr.lukam.test.model.systems.ReproduceSystem;
-import fr.lukam.test.model.systems.UpdateSystem;
+import fr.lukam.javaquarium.model.components.*;
+import fr.lukam.javaquarium.model.entityadders.FishAdder;
+import fr.lukam.javaquarium.model.entityadders.SeaweedAdder;
+import fr.lukam.javaquarium.model.fishes.Carpe;
+import fr.lukam.javaquarium.model.fishes.Merou;
+import fr.lukam.javaquarium.model.fishes.Sole;
+import fr.lukam.javaquarium.model.systems.EatSystem;
+import fr.lukam.javaquarium.model.systems.ReproduceSystem;
+import fr.lukam.javaquarium.model.systems.UpdateSystem;
 import org.junit.Before;
 import org.junit.Test;
 

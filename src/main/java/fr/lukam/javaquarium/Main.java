@@ -1,11 +1,11 @@
-package fr.lukam.test;
+package fr.lukam.javaquarium;
 
 import com.badlogic.ashley.core.Engine;
-import fr.lukam.test.model.CommandExecutor;
-import fr.lukam.test.model.entityadders.SeaweedAdder;
-import fr.lukam.test.model.systems.EatSystem;
-import fr.lukam.test.model.systems.ReproduceSystem;
-import fr.lukam.test.model.systems.UpdateSystem;
+import fr.lukam.javaquarium.model.CommandExecutor;
+import fr.lukam.javaquarium.model.entityadders.SeaweedAdder;
+import fr.lukam.javaquarium.model.systems.EatSystem;
+import fr.lukam.javaquarium.model.systems.ReproduceSystem;
+import fr.lukam.javaquarium.model.systems.UpdateSystem;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,7 +1,8 @@
-package fr.lukam.test.model;
+package fr.lukam.javaquarium.model;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import fr.lukam.javaquarium.model.components.*;
 import fr.lukam.test.model.components.*;
 
 import java.io.File;

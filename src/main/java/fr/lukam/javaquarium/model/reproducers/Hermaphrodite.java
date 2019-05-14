@@ -1,7 +1,7 @@
-package fr.lukam.test.model.reproducers;
+package fr.lukam.javaquarium.model.reproducers;
 
 import com.badlogic.ashley.core.Entity;
-import fr.lukam.test.model.components.SexComponent;
+import fr.lukam.javaquarium.model.components.SexComponent;
 
 public class Hermaphrodite implements Reproducer {
 

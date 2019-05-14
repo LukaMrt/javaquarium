@@ -1,4 +1,4 @@
-package fr.lukam.test.model.reproducers;
+package fr.lukam.javaquarium.model.reproducers;
 
 
 import com.badlogic.ashley.core.Entity;
