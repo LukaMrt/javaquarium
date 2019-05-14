@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import fr.lukam.javaquarium.model.components.EatenComponent;
 import fr.lukam.javaquarium.model.components.EaterComponent;
-import fr.lukam.test.model.components.*;
 import fr.lukam.javaquarium.model.systems.computers.EatComputer;
 
 public class EatSystem extends IteratingSystem {

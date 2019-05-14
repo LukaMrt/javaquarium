@@ -1,9 +1,9 @@
-package fr.lukam.test.model.entityadders;
+package fr.lukam.javaquarium.model.entityadders;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import fr.lukam.test.model.components.*;
-import fr.lukam.test.model.fishes.Fish;
+import fr.lukam.javaquarium.model.components.*;
+import fr.lukam.javaquarium.model.fishes.Fish;
 
 public class FishAdder implements EntityAdder {
 

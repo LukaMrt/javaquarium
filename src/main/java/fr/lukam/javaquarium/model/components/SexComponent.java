@@ -1,4 +1,4 @@
-package fr.lukam.test.model.components;
+package fr.lukam.javaquarium.model.components;
 
 import com.badlogic.ashley.core.Component;
 
@@ -14,7 +14,6 @@ public class SexComponent implements Component {
     }
 
     public enum SexType {
-
         MALE, FEMALE;
 
         public SexType getOtherSex() {
@@ -24,7 +23,6 @@ public class SexComponent implements Component {
         public static SexType getRandom() {
             return Arrays.asList(MALE, FEMALE).get(new Random().nextInt(2));
         }
-
     }
 
 }

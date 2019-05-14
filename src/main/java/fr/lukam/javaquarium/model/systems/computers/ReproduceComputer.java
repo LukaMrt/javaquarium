@@ -1,11 +1,11 @@
-package fr.lukam.test.model.systems.computers;
+package fr.lukam.javaquarium.model.systems.computers;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import fr.lukam.test.model.components.*;
-import fr.lukam.test.model.entityadders.FishAdder;
+import fr.lukam.javaquarium.model.components.*;
+import fr.lukam.javaquarium.model.entityadders.FishAdder;
 
 import java.util.Random;
 

@@ -1,12 +1,12 @@
-package fr.lukam.test.model.systems.computers;
+package fr.lukam.javaquarium.model.systems.computers;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import fr.lukam.test.model.components.EatenComponent;
-import fr.lukam.test.model.components.EaterComponent;
-import fr.lukam.test.model.components.HealthComponent;
-import fr.lukam.test.model.components.SpeciesComponent;
-import fr.lukam.test.model.eaters.Eater;
+import fr.lukam.javaquarium.model.components.EaterComponent;
+import fr.lukam.javaquarium.model.components.HealthComponent;
+import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.eaters.Eater;
+import fr.lukam.javaquarium.model.components.EatenComponent;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
-package fr.lukam.test.model.components;
+package fr.lukam.javaquarium.model.components;
 
 import com.badlogic.ashley.core.Component;
-import fr.lukam.test.model.fishes.*;
+import fr.lukam.javaquarium.model.fishes.*;
 
 import java.util.Arrays;
 
@@ -23,20 +23,24 @@ public class SpeciesComponent implements Component {
         SEAWEED(null, "algue");
 
         public final Class<? extends Fish> speciesClass;
-        private final String value;
+        private final String name;
 
-        SpeciesType(Class<? extends Fish> speciesClass, String value) {
+        SpeciesType(Class<? extends Fish> speciesClass, String name) {
             this.speciesClass = speciesClass;
-            this.value = value;
+            this.name = name;
         }
 
-        public static boolean isFish(String str) {
-            return "bar carpe poissonclown merou sole thon".contains(str);
-        }
-
-        public static SpeciesType getFromString(String str) {
+        public static boolean isFish(String testString) {
             return Arrays.stream(values())
-                    .filter(type -> type.value.equalsIgnoreCase(str))
+                    .map(speciesType -> speciesType.name)
+                    .reduce((allNames, name) -> allNames += name)
+                    .map(allNames -> allNames.contains(testString))
+                    .get();
+        }
+
+        public static SpeciesType getFromString(String name) {
+            return Arrays.stream(values())
+                    .filter(type -> type.name.equalsIgnoreCase(name))
                     .findAny()
                     .orElse(null);
         }

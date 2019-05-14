@@ -7,7 +7,6 @@ import fr.lukam.javaquarium.model.components.AgeComponent;
 import fr.lukam.javaquarium.model.components.EatenComponent;
 import fr.lukam.javaquarium.model.components.HealthComponent;
 import fr.lukam.javaquarium.model.components.SpeciesComponent;
-import fr.lukam.test.model.components.*;
 import fr.lukam.javaquarium.model.entityadders.SeaweedAdder;
 
 public class UpdateSystem extends IteratingSystem {

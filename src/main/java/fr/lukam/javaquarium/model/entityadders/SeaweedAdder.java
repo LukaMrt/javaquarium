@@ -1,10 +1,10 @@
-package fr.lukam.test.model.entityadders;
+package fr.lukam.javaquarium.model.entityadders;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import fr.lukam.test.model.components.AgeComponent;
-import fr.lukam.test.model.components.HealthComponent;
-import fr.lukam.test.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.AgeComponent;
+import fr.lukam.javaquarium.model.components.HealthComponent;
+import fr.lukam.javaquarium.model.components.SpeciesComponent;
 
 public class SeaweedAdder implements EntityAdder {
 

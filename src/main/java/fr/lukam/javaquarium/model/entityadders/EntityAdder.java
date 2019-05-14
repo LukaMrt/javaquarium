@@ -1,4 +1,4 @@
-package fr.lukam.test.model.entityadders;
+package fr.lukam.javaquarium.model.entityadders;
 
 import com.badlogic.ashley.core.Engine;
 

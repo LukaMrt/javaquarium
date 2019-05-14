@@ -1,4 +1,4 @@
-package fr.lukam.test.model.eaters;
+package fr.lukam.javaquarium.model.eaters;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;

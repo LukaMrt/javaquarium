@@ -1,7 +1,7 @@
-package fr.lukam.test.model.eaters;
+package fr.lukam.javaquarium.model.eaters;
 
 import com.badlogic.ashley.core.Entity;
-import fr.lukam.test.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.SpeciesComponent;
 
 public class Carnivorous implements Eater {
 

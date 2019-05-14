@@ -1,10 +1,10 @@
-package fr.lukam.test.model.fishes;
+package fr.lukam.javaquarium.model.fishes;
 
-import fr.lukam.test.model.components.SpeciesComponent;
-import fr.lukam.test.model.eaters.Eater;
-import fr.lukam.test.model.eaters.Herbivorous;
-import fr.lukam.test.model.reproducers.OneSex;
-import fr.lukam.test.model.reproducers.Reproducer;
+import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.eaters.Eater;
+import fr.lukam.javaquarium.model.eaters.Herbivorous;
+import fr.lukam.javaquarium.model.reproducers.OneSex;
+import fr.lukam.javaquarium.model.reproducers.Reproducer;
 
 public class Carpe implements Fish {
 
