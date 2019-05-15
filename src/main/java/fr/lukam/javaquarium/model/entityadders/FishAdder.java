@@ -5,7 +5,9 @@ import com.badlogic.ashley.core.Entity;
 import fr.lukam.javaquarium.model.components.*;
 import fr.lukam.javaquarium.model.fishes.Fish;
 
-public class FishAdder implements EntityAdder {
+public class FishAdder {
+
+    private static final int FISH_HEAlTH = 10;
 
     private final String name;
     private final SexComponent.SexType sex;
@@ -17,7 +19,6 @@ public class FishAdder implements EntityAdder {
         this.fish = fish;
     }
 
-    @Override
     public void addToEngine(Engine engine) {
         Entity entity = engine.createEntity();
         engine.addEntity(entity);
@@ -26,7 +27,7 @@ public class FishAdder implements EntityAdder {
         entity.add(new EaterComponent(fish.getEater()));
         entity.add(new SpeciesComponent(fish.getSpeciesType()));
         entity.add(new ReproducerComponent(fish.getReproducer()));
-        entity.add(new HealthComponent(10, -1));
+        entity.add(new HealthComponent(FISH_HEAlTH, -1));
         entity.add(new AgeComponent());
     }
 

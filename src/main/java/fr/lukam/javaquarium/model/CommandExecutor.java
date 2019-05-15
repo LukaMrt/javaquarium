@@ -3,6 +3,7 @@ package fr.lukam.javaquarium.model;
 import com.badlogic.ashley.core.Engine;
 import fr.lukam.javaquarium.model.components.SpeciesComponent;
 import fr.lukam.javaquarium.model.components.SexComponent;
+import fr.lukam.javaquarium.model.components.SpeciesType;
 import fr.lukam.javaquarium.model.entityadders.FishAdder;
 
 import java.io.IOException;
@@ -33,22 +34,24 @@ public class CommandExecutor {
 
                 String[] tab = line.split(" ");
 
-                if (tab[0].equalsIgnoreCase("add") && SpeciesComponent.SpeciesType.isFish(tab[1])) {
+                if (tab[0].equalsIgnoreCase("add") && SpeciesType.isFish(tab[1])) {
 
                     try {
-                        new FishAdder(tab[2], SexComponent.SexType.getRandom(), SpeciesComponent.SpeciesType.getFromString(tab[1]).speciesClass.newInstance()).addToEngine(engine);
+                        new FishAdder(tab[2], SexComponent.SexType.getRandom(), SpeciesType.getFromString(tab[1]).speciesClass.newInstance()).addToEngine(engine);
                     } catch (InstantiationException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
+
+                    return;
 
                 } else if (tab[0].equalsIgnoreCase("stop")) {
 
                     run = false;
 
-                } else {
+                } else if (tab[0].equalsIgnoreCase("add")){
 
                     try {
-                        new FishAdder("name", SexComponent.SexType.getRandom(), SpeciesComponent.SpeciesType.getFromString(tab[1]).speciesClass.newInstance()).addToEngine(engine);
+                        new FishAdder("name", SexComponent.SexType.getRandom(), SpeciesType.getFromString(tab[1]).speciesClass.newInstance()).addToEngine(engine);
                     } catch (InstantiationException | IllegalAccessException e) {
                         e.printStackTrace();
                     }

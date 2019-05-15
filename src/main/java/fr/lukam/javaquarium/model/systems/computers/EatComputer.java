@@ -2,11 +2,8 @@ package fr.lukam.javaquarium.model.systems.computers;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import fr.lukam.javaquarium.model.components.EaterComponent;
-import fr.lukam.javaquarium.model.components.HealthComponent;
-import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.*;
 import fr.lukam.javaquarium.model.eaters.Eater;
-import fr.lukam.javaquarium.model.components.EatenComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +47,8 @@ public class EatComputer {
 
     private boolean canEat(Entity eatenEntity) {
         HealthComponent healthComponent = entity.getComponent(HealthComponent.class);
-        SpeciesComponent.SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).speciesType;
-        SpeciesComponent.SpeciesType eatenEntitySpecies = eatenEntity.getComponent(SpeciesComponent.class).speciesType;
+        SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).speciesType;
+        SpeciesType eatenEntitySpecies = eatenEntity.getComponent(SpeciesComponent.class).speciesType;
 
         boolean areNotSameInstance = entity != eatenEntity;
         boolean isHealthOk = healthComponent.health <= 5;

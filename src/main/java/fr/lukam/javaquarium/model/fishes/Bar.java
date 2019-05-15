@@ -1,6 +1,6 @@
 package fr.lukam.javaquarium.model.fishes;
 
-import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.SpeciesType;
 import fr.lukam.javaquarium.model.eaters.Eater;
 import fr.lukam.javaquarium.model.reproducers.AgeHermaphrodite;
 import fr.lukam.javaquarium.model.reproducers.Reproducer;
@@ -19,8 +19,8 @@ public class Bar implements Fish {
     }
 
     @Override
-    public SpeciesComponent.SpeciesType getSpeciesType() {
-        return SpeciesComponent.SpeciesType.BAR;
+    public SpeciesType getSpeciesType() {
+        return SpeciesType.BAR;
     }
 
 }

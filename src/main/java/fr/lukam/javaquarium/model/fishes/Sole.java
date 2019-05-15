@@ -1,7 +1,7 @@
 package fr.lukam.javaquarium.model.fishes;
 
+import fr.lukam.javaquarium.model.components.SpeciesType;
 import fr.lukam.javaquarium.model.eaters.Eater;
-import fr.lukam.javaquarium.model.components.SpeciesComponent;
 import fr.lukam.javaquarium.model.eaters.Herbivorous;
 import fr.lukam.javaquarium.model.reproducers.Hermaphrodite;
 import fr.lukam.javaquarium.model.reproducers.Reproducer;
@@ -19,8 +19,8 @@ public class Sole implements Fish {
     }
 
     @Override
-    public SpeciesComponent.SpeciesType getSpeciesType() {
-        return SpeciesComponent.SpeciesType.SOLE;
+    public SpeciesType getSpeciesType() {
+        return SpeciesType.SOLE;
     }
 
 }

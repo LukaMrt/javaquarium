@@ -54,8 +54,8 @@ public class ReproduceComputer {
     }
 
     private boolean canReproduce(Entity otherEntity) {
-        SpeciesComponent.SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).speciesType;
-        SpeciesComponent.SpeciesType otherEntitySpecies = otherEntity.getComponent(SpeciesComponent.class).speciesType;
+        SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).speciesType;
+        SpeciesType otherEntitySpecies = otherEntity.getComponent(SpeciesComponent.class).speciesType;
 
         boolean isHealthOk = entity.getComponent(HealthComponent.class).health > 5;
         boolean areSameSpecies = entitySpecies == otherEntitySpecies;

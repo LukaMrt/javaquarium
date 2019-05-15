@@ -7,7 +7,9 @@ public class Hermaphrodite implements Reproducer {
 
     @Override
     public boolean mustChange(Entity entity, Entity otherEntity) {
-        boolean areNotSameSex = entity.getComponent(SexComponent.class).sex == otherEntity.getComponent(SexComponent.class).sex;
+        boolean areNotSameSex = entity
+                .getComponent(SexComponent.class)
+                .sex == otherEntity.getComponent(SexComponent.class).sex;
         return areNotSameSex;
     }
 

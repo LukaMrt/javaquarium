@@ -1,6 +1,6 @@
 package fr.lukam.javaquarium.model.fishes;
 
-import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.SpeciesType;
 import fr.lukam.javaquarium.model.eaters.Carnivorous;
 import fr.lukam.javaquarium.model.eaters.Eater;
 import fr.lukam.javaquarium.model.reproducers.AgeHermaphrodite;
@@ -19,8 +19,8 @@ public class Merou implements Fish {
     }
 
     @Override
-    public SpeciesComponent.SpeciesType getSpeciesType() {
-        return SpeciesComponent.SpeciesType.MEROU;
+    public SpeciesType getSpeciesType() {
+        return SpeciesType.MEROU;
     }
 
 }

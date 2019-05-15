@@ -45,7 +45,7 @@ public class Infos {
         List<Entity> seaweeds = new ArrayList<>();
 
         for (Entity entity : engine.getEntities()) {
-            if (entity.getComponent(SpeciesComponent.class).speciesType == SpeciesComponent.SpeciesType.SEAWEED) {
+            if (entity.getComponent(SpeciesComponent.class).speciesType == SpeciesType.SEAWEED) {
                 seaweeds.add(entity);
             }
         }
@@ -83,7 +83,7 @@ public class Infos {
         List<Entity> fishes = new ArrayList<>();
 
         for (Entity entity : engine.getEntities()) {
-            if (entity.getComponent(SpeciesComponent.class).speciesType != SpeciesComponent.SpeciesType.SEAWEED) {
+            if (entity.getComponent(SpeciesComponent.class).speciesType != SpeciesType.SEAWEED) {
                 fishes.add(entity);
             }
         }

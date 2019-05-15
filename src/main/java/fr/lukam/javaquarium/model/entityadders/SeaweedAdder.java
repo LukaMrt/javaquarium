@@ -5,8 +5,9 @@ import com.badlogic.ashley.core.Entity;
 import fr.lukam.javaquarium.model.components.AgeComponent;
 import fr.lukam.javaquarium.model.components.HealthComponent;
 import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.SpeciesType;
 
-public class SeaweedAdder implements EntityAdder {
+public class SeaweedAdder {
 
     private final int health;
 
@@ -14,11 +15,10 @@ public class SeaweedAdder implements EntityAdder {
         this.health = health;
     }
 
-    @Override
     public void addToEngine(Engine engine) {
         Entity entity = engine.createEntity();
         engine.addEntity(entity);
-        entity.add(new SpeciesComponent(SpeciesComponent.SpeciesType.SEAWEED));
+        entity.add(new SpeciesComponent(SpeciesType.SEAWEED));
         entity.add(new HealthComponent(health, 1));
         entity.add(new AgeComponent());
     }

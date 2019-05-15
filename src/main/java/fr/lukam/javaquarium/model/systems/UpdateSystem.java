@@ -3,10 +3,7 @@ package fr.lukam.javaquarium.model.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import fr.lukam.javaquarium.model.components.AgeComponent;
-import fr.lukam.javaquarium.model.components.EatenComponent;
-import fr.lukam.javaquarium.model.components.HealthComponent;
-import fr.lukam.javaquarium.model.components.SpeciesComponent;
+import fr.lukam.javaquarium.model.components.*;
 import fr.lukam.javaquarium.model.entityadders.SeaweedAdder;
 
 public class UpdateSystem extends IteratingSystem {
@@ -19,14 +16,21 @@ public class UpdateSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
 
         int age = entity.getComponent(AgeComponent.class).age;
+
         entity.getComponent(AgeComponent.class).age = ++age;
-        if (++age >= 20) getEngine().removeEntity(entity);
+        if (age >= 20) {
+            getEngine().removeEntity(entity);
+            return;
+        }
 
         entity.remove(EatenComponent.class);
 
         entity.getComponent(HealthComponent.class).update();
 
-        if (entity.getComponent(SpeciesComponent.class).speciesType == SpeciesComponent.SpeciesType.SEAWEED) {
+        boolean isSeaWeed = entity
+                .getComponent(SpeciesComponent.class)
+                .speciesType == SpeciesType.SEAWEED;
+        if (isSeaWeed) {
 
             if (age >= 10) {
 
