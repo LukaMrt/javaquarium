@@ -17,10 +17,10 @@ public class SeaweedAdder {
 
     public void addToEngine(Engine engine) {
         Entity entity = engine.createEntity();
-        engine.addEntity(entity);
         entity.add(new SpeciesComponent(SpeciesType.SEAWEED));
         entity.add(new HealthComponent(health, 1));
         entity.add(new AgeComponent());
+        engine.addEntity(entity);
     }
 
 }

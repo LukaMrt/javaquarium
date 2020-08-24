@@ -23,7 +23,11 @@ public class CommandExecutor {
 
         boolean run = true;
 
+        System.out.println("Que le jeu commence !");
+
         while (run) {
+
+            System.out.println("Entrez une action");
 
             String line = scanner.nextLine();
 

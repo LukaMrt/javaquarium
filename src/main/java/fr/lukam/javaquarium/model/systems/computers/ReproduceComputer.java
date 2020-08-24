@@ -21,23 +21,23 @@ public class ReproduceComputer {
 
         Entity otherEntity = getOtherEntity(engine);
 
-        if (canReproduce(otherEntity)) {
-            changeSex(entity, otherEntity);
+        if (!canReproduce(otherEntity)) {
+            return;
+        }
 
-            boolean areNotSameSex = entity.getComponent(SexComponent.class).sex != otherEntity.getComponent(SexComponent.class).sex;
-            if (areNotSameSex) {
+        changeSex(entity, otherEntity);
 
-                try {
-                    new FishAdder("test",
-                            SexComponent.SexType.getRandom(),
-                            entity.getComponent(SpeciesComponent.class).speciesType.speciesClass.newInstance())
-                            .addToEngine(engine);
-                } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+        if (!entity.getComponent(SexComponent.class).isSame(otherEntity.getComponent(SexComponent.class))) {
+            return;
+        }
 
-            }
-
+        try {
+            new FishAdder("test",
+                    SexComponent.SexType.getRandom(),
+                    entity.getComponent(SpeciesComponent.class).specie.speciesClass.newInstance())
+                    .addToEngine(engine);
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
 
     }
@@ -54,8 +54,8 @@ public class ReproduceComputer {
     }
 
     private boolean canReproduce(Entity otherEntity) {
-        SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).speciesType;
-        SpeciesType otherEntitySpecies = otherEntity.getComponent(SpeciesComponent.class).speciesType;
+        SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).specie;
+        SpeciesType otherEntitySpecies = otherEntity.getComponent(SpeciesComponent.class).specie;
 
         boolean isHealthOk = entity.getComponent(HealthComponent.class).health > 5;
         boolean areSameSpecies = entitySpecies == otherEntitySpecies;

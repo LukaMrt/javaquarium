@@ -35,8 +35,8 @@ public class TestJavaquarium {
         assertThat(engine.getEntities().get(0).getComponent(SexComponent.class).sex).isEqualTo(SexComponent.SexType.MALE);
         assertThat(engine.getEntities().get(1).getComponent(SexComponent.class).sex).isEqualTo(SexComponent.SexType.FEMALE);
 
-        assertThat(engine.getEntities().get(0).getComponent(SpeciesComponent.class).speciesType).isEqualTo(SpeciesType.MEROU);
-        assertThat(engine.getEntities().get(1).getComponent(SpeciesComponent.class).speciesType).isEqualTo(SpeciesType.SOLE);
+        assertThat(engine.getEntities().get(0).getComponent(SpeciesComponent.class).specie).isEqualTo(SpeciesType.MEROU);
+        assertThat(engine.getEntities().get(1).getComponent(SpeciesComponent.class).specie).isEqualTo(SpeciesType.SOLE);
     }
 
     @Test

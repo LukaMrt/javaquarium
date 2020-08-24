@@ -24,20 +24,13 @@ public class Main {
             new SeaweedAdder(10).addToEngine(engine);
         }
 
-        createFile();
-        new CommandExecutor(engine).readCommands();
-
-    }
-
-    private static void createFile() {
-
-        File file = new File("C:\\Users\\Luka\\Desktop\\Javaquarium.txt");
+        File file = new File("Javaquarium.txt");
 
         if (file.exists()) {
             file.delete();
         }
+        new CommandExecutor(engine).readCommands();
 
     }
-
 
 }

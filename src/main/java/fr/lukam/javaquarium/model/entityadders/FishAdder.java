@@ -21,7 +21,6 @@ public class FishAdder {
 
     public void addToEngine(Engine engine) {
         Entity entity = engine.createEntity();
-        engine.addEntity(entity);
         entity.add(new NameComponent(name));
         entity.add(new SexComponent(sex));
         entity.add(new EaterComponent(fish.getEater()));
@@ -29,6 +28,7 @@ public class FishAdder {
         entity.add(new ReproducerComponent(fish.getReproducer()));
         entity.add(new HealthComponent(FISH_HEAlTH, -1));
         entity.add(new AgeComponent());
+        engine.addEntity(entity);
     }
 
 }

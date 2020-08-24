@@ -15,10 +15,9 @@ public class UpdateSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
-        int age = entity.getComponent(AgeComponent.class).age;
+        AgeComponent age = entity.getComponent(AgeComponent.class);
 
-        entity.getComponent(AgeComponent.class).age = ++age;
-        if (age >= 20) {
+        if (age.isOver(20)) {
             getEngine().removeEntity(entity);
             return;
         }
@@ -27,19 +26,8 @@ public class UpdateSystem extends IteratingSystem {
 
         entity.getComponent(HealthComponent.class).update();
 
-        boolean isSeaWeed = entity
-                .getComponent(SpeciesComponent.class)
-                .speciesType == SpeciesType.SEAWEED;
-        if (isSeaWeed) {
-
-            if (age >= 10) {
-
-                int newAge = age % 2 == 0 ? age / 2 : (int) (age / 2 - 0.5);
-                new SeaweedAdder(newAge).addToEngine(getEngine());
-                entity.getComponent(AgeComponent.class).age = newAge;
-
-            }
-
+        if (entity.getComponent(SpeciesComponent.class).is(SpeciesType.SEAWEED) && age.isOver(10)) {
+            new SeaweedAdder(age.updateAge()).addToEngine(getEngine());
         }
 
     }

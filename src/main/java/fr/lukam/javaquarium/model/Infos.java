@@ -19,7 +19,7 @@ public class Infos {
 
     public void write() throws IOException {
 
-        File file = new File("C:\\Users\\Luka\\Desktop\\Javaquarium.txt");
+        File file = new File("Javaquarium.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -45,7 +45,7 @@ public class Infos {
         List<Entity> seaweeds = new ArrayList<>();
 
         for (Entity entity : engine.getEntities()) {
-            if (entity.getComponent(SpeciesComponent.class).speciesType == SpeciesType.SEAWEED) {
+            if (entity.getComponent(SpeciesComponent.class).specie == SpeciesType.SEAWEED) {
                 seaweeds.add(entity);
             }
         }
@@ -83,7 +83,7 @@ public class Infos {
         List<Entity> fishes = new ArrayList<>();
 
         for (Entity entity : engine.getEntities()) {
-            if (entity.getComponent(SpeciesComponent.class).speciesType != SpeciesType.SEAWEED) {
+            if (entity.getComponent(SpeciesComponent.class).specie != SpeciesType.SEAWEED) {
                 fishes.add(entity);
             }
         }
@@ -94,7 +94,7 @@ public class Infos {
                     + ", "
                     + fish.getComponent(SexComponent.class).sex
                     + ", "
-                    + fish.getComponent(SpeciesComponent.class).speciesType.speciesClass
+                    + fish.getComponent(SpeciesComponent.class).specie.speciesClass
                     + ", "
                     + fish.getComponent(HealthComponent.class).health
                     + " points de vie"

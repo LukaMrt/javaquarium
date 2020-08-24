@@ -9,13 +9,9 @@ public class Carnivorous implements Eater {
     private static final int HEALTH_WON = 5;
     private static final int HEALTH_INFLICTED = 4;
 
-
     @Override
     public boolean canEat(Entity entity) {
-        return entity
-                .getComponent(SpeciesComponent.class)
-                .speciesType
-                != SpeciesType.SEAWEED;
+        return !entity.getComponent(SpeciesComponent.class).is(SpeciesType.SEAWEED);
     }
 
     @Override

@@ -15,10 +15,11 @@ public class EatSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
-        if (entity.getComponent(EatenComponent.class) == null) {
-            new EatComputer(entity).compute(getEngine());
+        if (entity.getComponent(EatenComponent.class) != null) {
+            return;
         }
 
+        new EatComputer(entity).compute(getEngine());
     }
 
 }

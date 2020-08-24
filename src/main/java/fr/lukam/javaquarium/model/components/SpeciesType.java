@@ -28,12 +28,10 @@ public enum SpeciesType {
         this.name = name;
     }
 
-    public static boolean isFish(String testString) {
+    public static boolean isFish(String specie) {
         return Arrays.stream(values())
                 .map(speciesType -> speciesType.name)
-                .reduce((allNames, name1) -> allNames += name1)
-                .map(allNames -> allNames.contains(testString))
-                .get();
+                .anyMatch(specie::equals);
     }
 
     public static SpeciesType getFromString(String name) {

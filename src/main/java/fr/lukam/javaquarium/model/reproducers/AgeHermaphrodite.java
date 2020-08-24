@@ -7,7 +7,7 @@ public class AgeHermaphrodite implements Reproducer {
 
     @Override
     public boolean mustChange(Entity entity, Entity otherEntity) {
-        return entity.getComponent(AgeComponent.class).age == 10;
+        return entity.getComponent(AgeComponent.class).isTen();
     }
 
 }

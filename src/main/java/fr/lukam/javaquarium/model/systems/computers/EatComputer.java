@@ -47,8 +47,8 @@ public class EatComputer {
 
     private boolean canEat(Entity eatenEntity) {
         HealthComponent healthComponent = entity.getComponent(HealthComponent.class);
-        SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).speciesType;
-        SpeciesType eatenEntitySpecies = eatenEntity.getComponent(SpeciesComponent.class).speciesType;
+        SpeciesType entitySpecies = entity.getComponent(SpeciesComponent.class).specie;
+        SpeciesType eatenEntitySpecies = eatenEntity.getComponent(SpeciesComponent.class).specie;
 
         boolean areNotSameInstance = entity != eatenEntity;
         boolean isHealthOk = healthComponent.health <= 5;

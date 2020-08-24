@@ -13,6 +13,10 @@ public class SexComponent implements Component {
         this.sex = sex;
     }
 
+    public boolean isSame(SexComponent otherSex) {
+        return sex == otherSex.sex;
+    }
+
     public enum SexType {
         MALE, FEMALE;
 

@@ -11,9 +11,7 @@ public class Herbivorous implements Eater {
 
     @Override
     public boolean canEat(Entity entity) {
-        return entity
-                .getComponent(SpeciesComponent.class)
-                .speciesType == SpeciesType.SEAWEED;
+        return entity.getComponent(SpeciesComponent.class).is(SpeciesType.SEAWEED);
     }
 
     @Override

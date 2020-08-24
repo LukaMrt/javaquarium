@@ -4,10 +4,14 @@ import com.badlogic.ashley.core.Component;
 
 public class SpeciesComponent implements Component {
 
-    public final SpeciesType speciesType;
+    public final SpeciesType specie;
 
-    public SpeciesComponent(SpeciesType speciesType) {
-        this.speciesType = speciesType;
+    public SpeciesComponent(SpeciesType specie) {
+        this.specie = specie;
+    }
+
+    public boolean is(SpeciesType specie) {
+        return this.specie == specie;
     }
 
 }
