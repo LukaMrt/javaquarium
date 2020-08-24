@@ -1,26 +1,13 @@
 package fr.lukam.javaquarium.model.fishes;
 
-import fr.lukam.javaquarium.model.components.SpeciesType;
-import fr.lukam.javaquarium.model.eaters.Eater;
-import fr.lukam.javaquarium.model.reproducers.AgeHermaphrodite;
-import fr.lukam.javaquarium.model.reproducers.Reproducer;
-import fr.lukam.javaquarium.model.eaters.Herbivorous;
 
-public class Bar implements Fish {
+import fr.lukam.javaquarium.model.Fish;
+import fr.lukam.javaquarium.model.builders.FishBuilder;
 
-    @Override
-    public Eater getEater() {
-        return new Herbivorous();
-    }
+public class Bar extends Fish {
 
-    @Override
-    public Reproducer getReproducer() {
-        return new AgeHermaphrodite();
-    }
-
-    @Override
-    public SpeciesType getSpeciesType() {
-        return SpeciesType.BAR;
+    public Bar(FishBuilder fishBuilder) {
+        super(fishBuilder);
     }
 
 }

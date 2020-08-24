@@ -1,9 +1,5 @@
 package fr.lukam.javaquarium.model;
 
-import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import fr.lukam.javaquarium.model.components.*;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,22 +7,22 @@ import java.util.*;
 
 public class Infos {
 
-    private final Engine engine;
+    private final Aquarium aquarium;
 
-    public Infos(Engine engine) {
-        this.engine = engine;
+    public Infos() {
+        aquarium = Aquarium.getInstance();
     }
 
     public void write() throws IOException {
 
-        File file = new File("Javaquarium.txt");
+        File file = new File("C:\\Users\\Luka\\Desktop\\Javaquarium.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
 
         FileWriter fileWriter = new FileWriter(file);
 
-        fileWriter.write("--------------Tour---------------------");
+        fileWriter.write("--------------Tour" + this.aquarium.getTour() + "---------------------");
         fileWriter.write("\n\n");
 
         seaweedsInfos(fileWriter);
@@ -42,22 +38,24 @@ public class Infos {
 
         Map<Integer, Integer> map = new HashMap<>();
 
-        List<Entity> seaweeds = new ArrayList<>();
+        List<Seaweed> seaweeds = new ArrayList<>();
 
-        for (Entity entity : engine.getEntities()) {
-            if (entity.getComponent(SpeciesComponent.class).specie == SpeciesType.SEAWEED) {
-                seaweeds.add(entity);
+        for (Entity entity : aquarium.getEntities()) {
+
+            if (entity instanceof Seaweed) {
+
+                seaweeds.add((Seaweed) entity);
+
             }
+
         }
 
-        for (Entity seaweed : seaweeds) {
+        for (Seaweed seaweed : seaweeds) {
 
-            int age = seaweed.getComponent(AgeComponent.class).age;
-
-            if (!map.containsKey(age)) {
-                map.put(age, 0);
+            if (!map.containsKey(seaweed.getAge())) {
+                map.put(seaweed.getAge(), 0);
             }
-            map.replace(age, map.get(age) + 1);
+            map.replace(seaweed.getAge(), map.get(seaweed.getAge()) + 1);
 
         }
 
@@ -80,26 +78,18 @@ public class Infos {
 
         fileWriter.write("// 2- Poissons\n");
 
-        List<Entity> fishes = new ArrayList<>();
+        for (Fish fish : this.aquarium.getishes()) {
 
-        for (Entity entity : engine.getEntities()) {
-            if (entity.getComponent(SpeciesComponent.class).specie != SpeciesType.SEAWEED) {
-                fishes.add(entity);
-            }
-        }
-
-        for (Entity fish : fishes) {
-
-            fileWriter.write(fish.getComponent(NameComponent.class).name
+            fileWriter.write(fish.getName()
                     + ", "
-                    + fish.getComponent(SexComponent.class).sex
+                    + fish.getSex().getFrench()
                     + ", "
-                    + fish.getComponent(SpeciesComponent.class).specie.speciesClass
+                    + fish.getClass().getName().substring(fish.getClass().getName().lastIndexOf(".") + 1)
                     + ", "
-                    + fish.getComponent(HealthComponent.class).health
+                    + fish.getLifePoint()
                     + " points de vie"
                     + ", "
-                    + fish.getComponent(AgeComponent.class).age
+                    + fish.getAge()
                     + " ans\n");
 
         }

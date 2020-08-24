@@ -1,11 +1,12 @@
 package fr.lukam.javaquarium.model.fishes;
 
+
 import fr.lukam.javaquarium.model.Fish;
 import fr.lukam.javaquarium.model.builders.FishBuilder;
 
-public class Thon extends Fish {
+public class ClownFish extends Fish {
 
-    public Thon(FishBuilder fishBuilder) {
+    public ClownFish(FishBuilder fishBuilder) {
         super(fishBuilder);
     }
 
