@@ -1,6 +1,16 @@
 plugins {
     id 'java'
+    id 'jacoco'
+    id 'info.solidsoft.pitest' version '1.5.2'
 }
+
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter', 'junit-vintage'
+    }
+}
+
+test.finalizedBy jacocoTestReport
 
 group 'fr.lukam'
 version '1.0-SNAPSHOT'
@@ -9,13 +19,16 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile "com.badlogicgames.ashley:ashley:1.7.3"
-    compileOnly 'org.projectlombok:lombok:1.18.4'
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+    implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '2.22.2'
+    implementation group: 'org.jacoco', name: 'jacoco-maven-plugin', version: '0.8.5'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.6.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+    testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.6.2"'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.4.4'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
+    testImplementation group: 'org.pitest', name: 'pitest-junit5-plugin', version: '0.12'
 }
