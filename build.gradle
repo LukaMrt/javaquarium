@@ -23,6 +23,8 @@ repositories {
 
 dependencies {
     implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '3.0.0-M5'
+    implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.3'
+    implementation group: 'org.apache.maven.reporting', name: 'maven-reporting-api', version: '3.0'
     implementation group: 'org.jacoco', name: 'jacoco-maven-plugin', version: '0.8.7'
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.8.1'
