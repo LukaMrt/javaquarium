@@ -1,0 +1,11 @@
+parameters:
+    level: 10
+    paths:
+        - src/
+        - tests/
+
+services:
+    -
+        class: App\Tests\CleanArchitectureTest
+        tags:
+            - phpat.test
