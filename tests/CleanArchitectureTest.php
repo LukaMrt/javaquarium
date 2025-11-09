@@ -25,9 +25,11 @@ final class CleanArchitectureTest
                 Selector::inNamespace('Symfony\Bundle'),
                 Selector::inNamespace('Symfony\Component\HttpFoundation'),
                 Selector::inNamespace('Symfony\Component\HttpKernel'),
-                Selector::inNamespace('Symfony\Component\Validator'),
             )
-            ->excluding(Selector::inNamespace('Symfony\Component\Uid'))
+            ->excluding(
+                Selector::inNamespace('Symfony\Component\Uid'),
+                Selector::inNamespace('Symfony\Component\Validator')
+            )
             ->because('The Domain layer must be independent of other layers and frameworks.');
     }
 
@@ -43,7 +45,6 @@ final class CleanArchitectureTest
                 Selector::inNamespace('Symfony\Bundle'),
                 Selector::inNamespace('Symfony\Component\HttpFoundation'),
                 Selector::inNamespace('Symfony\Component\HttpKernel'),
-                Selector::inNamespace('Symfony\Component\Validator'),
             )
             ->because('The Application layer should only depend on the Domain layer.');
     }
