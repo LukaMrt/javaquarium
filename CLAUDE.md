@@ -41,14 +41,9 @@ symfony server:stop
 ```bash
 # Exécuter tous les tests
 composer test
-# ou
-php bin/phpunit
 
 # Exécuter un test spécifique
-php bin/phpunit tests/SomeTest.php
-
-# Tests avec couverture de code
-php bin/phpunit --coverage-html coverage
+composer test --filter testName
 ```
 
 ### Analyse statique
@@ -141,7 +136,8 @@ Le projet suit une architecture en couches strictement découplées :
 - Un test par comportement
 - Tests unitaires pour le domaine (pas de dépendances externes)
 - Tests d'intégration pour l'infrastructure
-- Viser une couverture de code maximale
+- Viser une couverture de code de 100%
+- Vérifier la couverture avec `composer test:coverage:text`
 
 ### Domain-Driven Development (DDD)
 
@@ -255,7 +251,8 @@ Variables Docker Compose :
 ## Outils de développement
 
 - **PHPStan** : Analyse statique stricte (level 9)
-- **PHPUnit** : Framework de tests
+- **PHPUnit** : Framework de tests avec couverture de code
+- **Xdebug** : Extension PHP pour la couverture de code (activer avec `XDEBUG_MODE=coverage`)
 - **Symfony Maker** : Génération de code (utiliser avec parcimonie, préférer l'écriture manuelle pour respecter l'architecture)
 - **Doctrine Migrations** : Gestion des versions de BDD
 - **Web Profiler** : Débogage (dev uniquement)
