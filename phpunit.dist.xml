@@ -22,6 +22,16 @@
             <directory>tests</directory>
             <exclude>tests/CleanArchitectureTest.php</exclude>
         </testsuite>
+        <testsuite name="Unit">
+            <directory>tests/Domain</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/Infrastructure</directory>
+            <directory>tests/Application</directory>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory>tests/Presentation</directory>
+        </testsuite>
     </testsuites>
 
     <source ignoreSuppressionOfDeprecations="true"
@@ -33,12 +43,23 @@
             <directory>src</directory>
         </include>
 
+        <exclude>
+            <file>src/Kernel.php</file>
+            <directory>src/Infrastructure/Persistence/Doctrine/Type</directory>
+        </exclude>
+
         <deprecationTrigger>
             <method>Doctrine\Deprecations\Deprecation::trigger</method>
             <method>Doctrine\Deprecations\Deprecation::delegateTriggerToBackend</method>
             <function>trigger_deprecation</function>
         </deprecationTrigger>
     </source>
+
+    <coverage includeUncoveredFiles="true"
+              pathCoverage="false"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+    </coverage>
 
     <extensions>
     </extensions>
