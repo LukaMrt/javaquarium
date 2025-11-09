@@ -1,0 +1,15 @@
+# Fichiers et dossiers exclus de la couverture de code
+
+# Kernel Symfony (bootstrapping)
+src/Kernel.php
+
+# Types Doctrine custom (mapping simple, pas de logique)
+src/Infrastructure/Persistence/Doctrine/Type/
+
+# Migrations Doctrine (générées automatiquement)
+src/Infrastructure/Persistence/Migration/
+
+# Configuration et points d'entrée
+config/
+public/
+bin/
