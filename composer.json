@@ -1,7 +1,7 @@
 {
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "stable",
+    "minimum-stability": "rc",
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
@@ -9,8 +9,8 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^4.3.4",
         "doctrine/doctrine-bundle": "^3.0.0",
-        "doctrine/doctrine-migrations-bundle": "^3.6",
-        "doctrine/orm": "^3.5.3",
+        "doctrine/doctrine-migrations-bundle": "^3.7",
+        "doctrine/orm": "^3.5.7",
         "fakerphp/faker": "^1.24.1",
         "phpdocumentor/reflection-docblock": "^5.6.3",
         "phpstan/phpdoc-parser": "^2.3",
@@ -20,7 +20,7 @@
         "symfony/doctrine-messenger": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/expression-language": "7.3.*",
-        "symfony/flex": "^2.9",
+        "symfony/flex": "^2.10",
         "symfony/form": "7.3.*",
         "symfony/framework-bundle": "7.3.*",
         "symfony/http-client": "7.3.*",
@@ -29,6 +29,7 @@
         "symfony/mime": "7.3.*",
         "symfony/monolog-bundle": "^3.10",
         "symfony/notifier": "7.3.*",
+        "symfony/object-mapper": "7.3.*",
         "symfony/process": "7.3.*",
         "symfony/property-access": "7.3.*",
         "symfony/property-info": "7.3.*",
@@ -44,7 +45,7 @@
         "symfony/validator": "7.3.*",
         "symfony/web-link": "7.3.*",
         "symfony/yaml": "7.3.*",
-        "twig/extra-bundle": "^2.12|^3.22",
+        "twig/extra-bundle": "^2.12|^3.22.1",
         "twig/twig": "^2.12|^3.22"
     },
     "config": {
@@ -91,9 +92,18 @@
         ],
         "dev": "symfony server:start --port=8000",
         "stop": "symfony server:stop",
-        "test": "php -d xdebug.mode=coverage bin/phpunit --coverage-html coverage --coverage-clover coverage.xml",
+        "test:prepare": [
+            "@php bin/console doctrine:database:drop --if-exists --force --env=test",
+            "@php bin/console doctrine:database:create --env=test",
+            "@php bin/console doctrine:migrations:migrate --no-interaction --env=test",
+            "@php bin/console doctrine:fixtures:load --no-interaction --env=test"
+        ],
+        "test": [
+            "@test:prepare",
+            "php -d xdebug.mode=coverage bin/phpunit --coverage-html coverage --coverage-clover coverage.xml"
+        ],
         "rector": "php vendor/bin/rector process",
-        "stan": "php vendor/bin/phpstan analyse src tests",
+        "stan": "php vendor/bin/phpstan --memory-limit=2G analyse src tests",
         "check": [
             "@rector",
             "@stan",
@@ -110,11 +120,13 @@
         }
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^8.4",
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
         "phpat/phpat": "^0.12.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.31",
-        "phpunit/phpunit": "^12.4.2",
-        "rector/rector": "^2.2.7",
+        "phpstan/phpstan": "^2.1.32",
+        "phpunit/phpunit": "^12.4.3",
+        "rector/rector": "^2.2.8",
         "symfony/browser-kit": "7.3.*",
         "symfony/css-selector": "7.3.*",
         "symfony/debug-bundle": "7.3.*",
