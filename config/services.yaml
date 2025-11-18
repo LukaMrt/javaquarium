@@ -11,3 +11,7 @@ services:
     Symfony\Component\ObjectMapper\ObjectMapperInterface:
         alias: object_mapper
         public: true
+
+    App\Domain\Service\RandomGeneratorInterface:
+        alias: App\Infrastructure\Service\SymfonyRandomGenerator
+        public: true

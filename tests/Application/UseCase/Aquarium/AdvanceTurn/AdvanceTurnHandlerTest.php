@@ -12,6 +12,7 @@ use App\Application\UseCase\Aquarium\AdvanceTurn\AdvanceTurnHandler;
 use App\Domain\Aquarium\Fixtures\AquariumFixturesData;
 use App\Domain\Aquarium\Repository\AquariumRepositoryInterface;
 use App\Domain\Aquarium\ValueObject\AquariumId;
+use App\Domain\Service\RandomGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class AdvanceTurnHandlerTest extends KernelTestCase
@@ -25,12 +26,14 @@ final class AdvanceTurnHandlerTest extends KernelTestCase
         self::bootKernel();
         $repository = self::getContainer()->get(AquariumRepositoryInterface::class);
         $mapper = self::getContainer()->get(ObjectMapperInterface::class);
+        $randomGenerator = self::getContainer()->get(RandomGeneratorInterface::class);
 
         $this->assertInstanceOf(AquariumRepositoryInterface::class, $repository);
         $this->assertInstanceOf(ObjectMapperInterface::class, $mapper);
+        $this->assertInstanceOf(RandomGeneratorInterface::class, $randomGenerator);
 
         $this->repository = $repository;
-        $this->handler = new AdvanceTurnHandler($repository, $mapper);
+        $this->handler = new AdvanceTurnHandler($repository, $mapper, $randomGenerator);
     }
 
     public function testItAdvancesTurn(): void
