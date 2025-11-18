@@ -46,7 +46,7 @@ final class SymfonyRandomGeneratorTest extends TestCase
         $results = [];
 
         // When - collect multiple results to verify randomness
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $results[] = $this->generator->randomBoolean();
         }
 

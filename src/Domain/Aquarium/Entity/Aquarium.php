@@ -16,6 +16,7 @@ use App\Domain\Shared\ValueObject\EntityName;
 final class Aquarium
 {
     private readonly HungerService $hungerService;
+    
     private readonly FeedingService $feedingService;
 
     /**
@@ -80,6 +81,7 @@ final class Aquarium
         foreach ($this->fishes as $fish) {
             $fish->age();
         }
+        
         foreach ($this->algae as $algae) {
             $algae->age();
         }
@@ -112,17 +114,17 @@ final class Aquarium
 
         if ($diet->isHerbivorous()) {
             // Herbivores can eat algae
-            $potentialTargets = array_filter($this->algae, fn(Algae $algae) => !$algae->isDead());
+            $potentialTargets = array_filter($this->algae, fn(Algae $algae): bool => !$algae->isDead());
         } elseif ($diet->isCarnivorous()) {
             // Carnivores can eat other fish (not same species, not self)
             $potentialTargets = array_filter(
                 $this->fishes,
-                fn(Fish $otherFish) => $this->feedingService->canFeed($fish, $otherFish)
+                fn(Fish $otherFish): bool => $this->feedingService->canFeed($fish, $otherFish)
             );
         }
 
         // If targets available, randomly select one and attempt to feed
-        if (!empty($potentialTargets)) {
+        if ($potentialTargets !== []) {
             $target = $randomGenerator->selectRandom(array_values($potentialTargets));
             $this->feedingService->feed($fish, $target);
         }
@@ -130,7 +132,7 @@ final class Aquarium
 
     private function removeDead(): void
     {
-        $this->fishes = array_values(array_filter($this->fishes, fn(Fish $fish) => !$fish->isDead()));
-        $this->algae = array_values(array_filter($this->algae, fn(Algae $algae) => !$algae->isDead()));
+        $this->fishes = array_values(array_filter($this->fishes, fn(Fish $fish): bool => !$fish->isDead()));
+        $this->algae = array_values(array_filter($this->algae, fn(Algae $algae): bool => !$algae->isDead()));
     }
 }

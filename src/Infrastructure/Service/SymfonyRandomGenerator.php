@@ -10,7 +10,7 @@ final readonly class SymfonyRandomGenerator implements RandomGeneratorInterface
 {
     public function selectRandom(array $items): mixed
     {
-        if (empty($items)) {
+        if ($items === []) {
             throw new \InvalidArgumentException('Cannot select from empty array');
         }
 
