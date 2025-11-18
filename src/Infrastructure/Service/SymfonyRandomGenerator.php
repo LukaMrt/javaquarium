@@ -22,4 +22,11 @@ final readonly class SymfonyRandomGenerator implements RandomGeneratorInterface
     {
         return (bool) random_int(0, 1);
     }
+
+    public function shuffle(array $items): array
+    {
+        $shuffled = $items;
+        shuffle($shuffled);
+        return $shuffled;
+    }
 }

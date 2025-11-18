@@ -111,6 +111,7 @@ final class AquariumTest extends TestCase
             TurnNumber::initial()
         );
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
+        $randomGenerator->method('shuffle')->willReturnArgument(0); // Return input unchanged
 
         // When
         $aquarium->advanceTurn($randomGenerator);
@@ -147,6 +148,7 @@ final class AquariumTest extends TestCase
         $aquarium->addAlgae($algae);
 
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
+        $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
         $aquarium->advanceTurn($randomGenerator);
@@ -177,6 +179,7 @@ final class AquariumTest extends TestCase
         $aquarium->addFish($fish);
 
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
+        $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
         $aquarium->advanceTurn($randomGenerator);
@@ -216,6 +219,7 @@ final class AquariumTest extends TestCase
 
         // Mock random to always select the algae
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
+        $randomGenerator->method('shuffle')->willReturnArgument(0);
         $randomGenerator->method('selectRandom')
             ->willReturn($algae);
 
@@ -262,6 +266,7 @@ final class AquariumTest extends TestCase
         $aquarium->addFish($healthyFish);
 
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
+        $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
         $aquarium->advanceTurn($randomGenerator);

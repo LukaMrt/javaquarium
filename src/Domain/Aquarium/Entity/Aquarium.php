@@ -8,17 +8,12 @@ use App\Domain\Algae\Entity\Algae;
 use App\Domain\Aquarium\ValueObject\AquariumId;
 use App\Domain\Aquarium\ValueObject\TurnNumber;
 use App\Domain\Fish\Entity\Fish;
-use App\Domain\Service\FeedingService;
-use App\Domain\Service\HungerService;
 use App\Domain\Service\RandomGeneratorInterface;
+use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\EntityName;
 
 final class Aquarium
 {
-    private readonly HungerService $hungerService;
-    
-    private readonly FeedingService $feedingService;
-
     /**
      * @param Fish[] $fishes
      * @param Algae[] $algae
@@ -30,8 +25,6 @@ final class Aquarium
         private array $fishes = [],
         private array $algae = [],
     ) {
-        $this->hungerService = new HungerService();
-        $this->feedingService = new FeedingService();
     }
 
     public function addFish(Fish $fish): void
@@ -77,23 +70,26 @@ final class Aquarium
 
     public function advanceTurn(RandomGeneratorInterface $randomGenerator): void
     {
+        // Shuffle order to randomize processing
+        $this->fishes = $randomGenerator->shuffle($this->fishes);
+        $this->algae = $randomGenerator->shuffle($this->algae);
+
         // Phase 1: Age all entities
         foreach ($this->fishes as $fish) {
             $fish->age();
         }
-        
         foreach ($this->algae as $algae) {
             $algae->age();
         }
 
         // Phase 2: Apply hunger to all fish
         foreach ($this->fishes as $fish) {
-            $this->hungerService->applyHunger($fish);
+            $fish->loseHealth(GameRules::HP_LOSS_PER_TURN);
         }
 
         // Phase 3: Feeding - hungry fish attempt to eat
         foreach ($this->fishes as $fish) {
-            if ($this->hungerService->isHungry($fish)) {
+            if ($fish->isHungry()) {
                 $this->attemptFeeding($fish, $randomGenerator);
             }
         }
@@ -105,28 +101,40 @@ final class Aquarium
         $this->turnNumber = $this->turnNumber->increment();
     }
 
-    private function attemptFeeding(Fish $fish, RandomGeneratorInterface $randomGenerator): void
+    private function attemptFeeding(Fish $predator, RandomGeneratorInterface $randomGenerator): void
     {
-        $diet = $fish->getSpecies()->getDiet();
+        $diet = $predator->getSpecies()->getDiet();
 
-        // Build list of potential targets
-        $potentialTargets = [];
+        // Build list of valid targets
+        $validTargets = [];
 
         if ($diet->isHerbivorous()) {
             // Herbivores can eat algae
-            $potentialTargets = array_filter($this->algae, fn(Algae $algae): bool => !$algae->isDead());
+            $validTargets = array_filter($this->algae, fn(Algae $algae): bool => !$algae->isDead());
         } elseif ($diet->isCarnivorous()) {
             // Carnivores can eat other fish (not same species, not self)
-            $potentialTargets = array_filter(
+            $validTargets = array_filter(
                 $this->fishes,
-                fn(Fish $otherFish): bool => $this->feedingService->canFeed($fish, $otherFish)
+                fn(Fish $prey): bool => !$prey->isDead()
+                    && !$predator->getId()->equals($prey->getId())
+                    && $predator->getSpecies() !== $prey->getSpecies()
             );
         }
 
-        // If targets available, randomly select one and attempt to feed
-        if ($potentialTargets !== []) {
-            $target = $randomGenerator->selectRandom(array_values($potentialTargets));
-            $this->feedingService->feed($fish, $target);
+        // If no valid targets, cannot feed
+        if ($validTargets === []) {
+            return;
+        }
+
+        // Select random target and feed
+        $target = $randomGenerator->selectRandom(array_values($validTargets));
+
+        if ($target instanceof Algae) {
+            $predator->gainHealth(GameRules::HERBIVOROUS_HP_GAIN);
+            $target->loseHealth(GameRules::ALGAE_HP_LOSS_WHEN_EATEN);
+        } elseif ($target instanceof Fish) {
+            $predator->gainHealth(GameRules::CARNIVOROUS_HP_GAIN);
+            $target->loseHealth(GameRules::FISH_HP_LOSS_WHEN_ATTACKED);
         }
     }
 

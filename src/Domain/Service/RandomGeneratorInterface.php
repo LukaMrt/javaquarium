@@ -20,4 +20,13 @@ interface RandomGeneratorInterface
      * Returns a random boolean value.
      */
     public function randomBoolean(): bool;
+
+    /**
+     * Shuffles an array in random order.
+     *
+     * @template T
+     * @param array<T> $items
+     * @return array<T>
+     */
+    public function shuffle(array $items): array;
 }

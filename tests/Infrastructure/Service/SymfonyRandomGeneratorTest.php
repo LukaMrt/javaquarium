@@ -64,4 +64,29 @@ final class SymfonyRandomGeneratorTest extends TestCase
         // When
         $this->generator->selectRandom([]);
     }
+
+    public function test_shuffle_returns_same_elements(): void
+    {
+        // Given
+        $items = ['a', 'b', 'c', 'd', 'e'];
+
+        // When
+        $shuffled = $this->generator->shuffle($items);
+
+        // Then
+        $this->assertCount(5, $shuffled);
+        $this->assertEqualsCanonicalizing($items, $shuffled); // Same elements, possibly different order
+    }
+
+    public function test_shuffle_empty_array(): void
+    {
+        // Given
+        $items = [];
+
+        // When
+        $shuffled = $this->generator->shuffle($items);
+
+        // Then
+        $this->assertSame([], $shuffled);
+    }
 }
