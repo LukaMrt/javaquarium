@@ -29,4 +29,83 @@ final class AlgaeTest extends TestCase
         $this->assertSame(0, $algae->getAge()->toInt());
         $this->assertSame(GameRules::INITIAL_HP, $algae->getHealthPoints()->toInt());
     }
+
+    public function test_lose_health_decreases_hp(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            HealthPoints::initial()
+        );
+
+        // When
+        $algae->loseHealth(2);
+
+        // Then
+        $this->assertSame(8, $algae->getHealthPoints()->toInt());
+    }
+
+    public function test_gain_health_increases_hp(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(5)
+        );
+
+        // When
+        $algae->gainHealth(3);
+
+        // Then
+        $this->assertSame(8, $algae->getHealthPoints()->toInt());
+    }
+
+    public function test_age_increments_age(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            HealthPoints::initial()
+        );
+
+        // When
+        $algae->age();
+
+        // Then
+        $this->assertSame(1, $algae->getAge()->toInt());
+    }
+
+    public function test_is_dead_returns_true_when_dead(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(0)
+        );
+
+        // When & Then
+        $this->assertTrue($algae->isDead());
+    }
+
+    public function test_is_dead_returns_false_when_alive(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(1)
+        );
+
+        // When & Then
+        $this->assertFalse($algae->isDead());
+    }
 }

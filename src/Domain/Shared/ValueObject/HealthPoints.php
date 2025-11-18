@@ -27,4 +27,26 @@ final readonly class HealthPoints
     {
         return $this->value === $other->value;
     }
+
+    public function add(int $amount): self
+    {
+        $newValue = min($this->value + $amount, GameRules::MAX_HP);
+        return new self($newValue);
+    }
+
+    public function subtract(int $amount): self
+    {
+        $newValue = max($this->value - $amount, 0);
+        return new self($newValue);
+    }
+
+    public function isHungry(): bool
+    {
+        return $this->value <= GameRules::HUNGER_THRESHOLD;
+    }
+
+    public function isDead(): bool
+    {
+        return $this->value === 0;
+    }
 }

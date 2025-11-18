@@ -11,13 +11,13 @@ use App\Domain\Shared\ValueObject\Age;
 use App\Domain\Shared\ValueObject\EntityName;
 use App\Domain\Shared\ValueObject\HealthPoints;
 
-final readonly class Fish
+final class Fish
 {
     public function __construct(
-        private FishId $id,
-        private EntityName $name,
-        private Species $species,
-        private Sex $sex,
+        private readonly FishId $id,
+        private readonly EntityName $name,
+        private readonly Species $species,
+        private readonly Sex $sex,
         private Age $age,
         private HealthPoints $healthPoints
     ) {
@@ -51,5 +51,30 @@ final readonly class Fish
     public function getHealthPoints(): HealthPoints
     {
         return $this->healthPoints;
+    }
+
+    public function loseHealth(int $amount): void
+    {
+        $this->healthPoints = $this->healthPoints->subtract($amount);
+    }
+
+    public function gainHealth(int $amount): void
+    {
+        $this->healthPoints = $this->healthPoints->add($amount);
+    }
+
+    public function age(): void
+    {
+        $this->age = $this->age->increment();
+    }
+
+    public function isHungry(): bool
+    {
+        return $this->healthPoints->isHungry();
+    }
+
+    public function isDead(): bool
+    {
+        return $this->healthPoints->isDead();
     }
 }

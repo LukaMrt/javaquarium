@@ -90,6 +90,7 @@ final class CleanArchitectureTest
     {
         return PHPat::rule()
             ->classes(Selector::inNamespace('App\Domain\Service'))
+            ->excluding(Selector::isInterface())
             ->shouldBeFinal()
             ->because('Domain Services must be stateless (final and readonly).');
     }
@@ -98,6 +99,7 @@ final class CleanArchitectureTest
     {
         return PHPat::rule()
             ->classes(Selector::inNamespace('App\Domain\Service'))
+            ->excluding(Selector::isInterface())
             ->shouldBeReadonly()
             ->because('Domain Services must be stateless (final and readonly).');
     }

@@ -24,4 +24,16 @@ enum Species: string
             self::CARP => 'Carpe',
         };
     }
+
+    public function getDiet(): Diet
+    {
+        return match ($this) {
+            self::GROUPER => Diet::CARNIVOROUS,
+            self::TUNA => Diet::CARNIVOROUS,
+            self::BASS => Diet::CARNIVOROUS,
+            self::CLOWNFISH => Diet::HERBIVOROUS,
+            self::SOLE => Diet::HERBIVOROUS,
+            self::CARP => Diet::HERBIVOROUS,
+        };
+    }
 }
