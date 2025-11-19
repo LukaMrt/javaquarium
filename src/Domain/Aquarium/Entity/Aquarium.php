@@ -8,7 +8,7 @@ use App\Domain\Algae\Entity\Algae;
 use App\Domain\Aquarium\ValueObject\AquariumId;
 use App\Domain\Aquarium\ValueObject\TurnNumber;
 use App\Domain\Fish\Entity\Fish;
-use App\Domain\Service\AlgaeGrowthService;
+use App\Domain\Service\FeedingService;
 use App\Domain\Service\RandomGeneratorInterface;
 use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\EntityName;
@@ -71,7 +71,7 @@ final class Aquarium
 
     public function advanceTurn(
         RandomGeneratorInterface $randomGenerator,
-        AlgaeGrowthService $algaeGrowthService
+        FeedingService $feedingService
     ): void {
         // Shuffle order to randomize processing
         $this->fishes = $randomGenerator->shuffle($this->fishes);
@@ -82,28 +82,23 @@ final class Aquarium
             $fish->age();
         }
 
-        $newAlgaeList = [];
         foreach ($this->algae as $algae) {
             $algae->age();
-            $offspring = $algaeGrowthService->grow($algae);
+            $offspring = $algae->grow();
             if ($offspring instanceof Algae) {
-                $newAlgaeList[] = $offspring;
+                $this->addAlgae($offspring);
             }
-        }
-
-        foreach ($newAlgaeList as $newAlgae) {
-            $this->addAlgae($newAlgae);
         }
 
         // Phase 2: Apply hunger to all fish
         foreach ($this->fishes as $fish) {
-            $fish->loseHealth(GameRules::HP_LOSS_PER_TURN);
+            $fish->loseHealth(GameRules::FISH_HP_LOSS_PER_TURN);
         }
 
         // Phase 3: Feeding - hungry fish attempt to eat
         foreach ($this->fishes as $fish) {
-            if ($fish->isHungry()) {
-                $this->attemptFeeding($fish, $randomGenerator);
+            if (!$fish->isDead() && $fish->isHungry()) {
+                $feedingService->attemptFeeding($fish, $this, $randomGenerator);
             }
         }
 
@@ -112,43 +107,6 @@ final class Aquarium
 
         // Phase 5: Increment turn number
         $this->turnNumber = $this->turnNumber->increment();
-    }
-
-    private function attemptFeeding(Fish $predator, RandomGeneratorInterface $randomGenerator): void
-    {
-        $diet = $predator->getSpecies()->getDiet();
-
-        // Build list of valid targets
-        $validTargets = [];
-
-        if ($diet->isHerbivorous()) {
-            // Herbivores can eat algae
-            $validTargets = array_filter($this->algae, fn(Algae $algae): bool => !$algae->isDead());
-        } elseif ($diet->isCarnivorous()) {
-            // Carnivores can eat other fish (not same species, not self)
-            $validTargets = array_filter(
-                $this->fishes,
-                fn(Fish $prey): bool => !$prey->isDead()
-                    && !$predator->getId()->equals($prey->getId())
-                    && $predator->getSpecies() !== $prey->getSpecies()
-            );
-        }
-
-        // If no valid targets, cannot feed
-        if ($validTargets === []) {
-            return;
-        }
-
-        // Select random target and feed
-        $target = $randomGenerator->selectRandom(array_values($validTargets));
-
-        if ($target instanceof Algae) {
-            $predator->gainHealth(GameRules::HERBIVOROUS_HP_GAIN);
-            $target->loseHealth(GameRules::ALGAE_HP_LOSS_WHEN_EATEN);
-        } elseif ($target instanceof Fish) {
-            $predator->gainHealth(GameRules::CARNIVOROUS_HP_GAIN);
-            $target->loseHealth(GameRules::FISH_HP_LOSS_WHEN_ATTACKED);
-        }
     }
 
     private function removeDead(): void

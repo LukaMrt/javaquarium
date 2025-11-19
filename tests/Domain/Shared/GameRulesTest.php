@@ -30,7 +30,7 @@ final class GameRulesTest extends TestCase
     public function test_hp_loss_per_turn_is_1(): void
     {
         // Then
-        $this->assertSame(1, GameRules::HP_LOSS_PER_TURN);
+        $this->assertSame(1, GameRules::FISH_HP_LOSS_PER_TURN);
     }
 
     public function test_herbivorous_hp_gain_is_3(): void

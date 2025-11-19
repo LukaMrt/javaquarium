@@ -108,4 +108,133 @@ final class AlgaeTest extends TestCase
         // When & Then
         $this->assertFalse($algae->isDead());
     }
+
+    public function test_grow_increases_health_by_one(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(5)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertSame(6, $algae->getHealthPoints()->toInt());
+        $this->assertNotInstanceOf(Algae::class, $offspring);
+    }
+
+    public function test_grow_returns_null_when_below_split_threshold(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(8)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertSame(9, $algae->getHealthPoints()->toInt());
+        $this->assertNotInstanceOf(Algae::class, $offspring);
+    }
+
+    public function test_grow_splits_when_reaching_threshold(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(9)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertInstanceOf(Algae::class, $offspring);
+        $this->assertSame(5, $algae->getHealthPoints()->toInt()); // Parent: 10 / 2 = 5
+        $this->assertSame(5, $offspring->getHealthPoints()->toInt()); // Offspring: 10 / 2 = 5
+    }
+
+    public function test_grow_splits_when_above_threshold(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(10)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertInstanceOf(Algae::class, $offspring);
+        $this->assertSame(5, $algae->getHealthPoints()->toInt()); // Parent: 11 / 2 = 5
+        $this->assertSame(5, $offspring->getHealthPoints()->toInt()); // Offspring: floor(11/2) = 5
+    }
+
+    public function test_split_offspring_has_same_name_as_parent(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Super Algae'),
+            Age::initial(),
+            new HealthPoints(9)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertInstanceOf(Algae::class, $offspring);
+        $this->assertSame('Super Algae', $offspring->getName()->toString());
+    }
+
+    public function test_split_offspring_has_initial_age(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Old Algae'),
+            new Age(5), // Parent is old
+            new HealthPoints(9)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertInstanceOf(Algae::class, $offspring);
+        $this->assertSame(0, $offspring->getAge()->toInt()); // Offspring starts at age 0
+        $this->assertSame(5, $algae->getAge()->toInt()); // Parent keeps its age
+    }
+
+    public function test_split_offspring_has_different_id(): void
+    {
+        // Given
+        $algae = new Algae(
+            AlgaeId::generate(),
+            new EntityName('Green Algae'),
+            Age::initial(),
+            new HealthPoints(9)
+        );
+
+        // When
+        $offspring = $algae->grow();
+
+        // Then
+        $this->assertInstanceOf(Algae::class, $offspring);
+        $this->assertFalse($algae->getId()->equals($offspring->getId()));
+    }
 }
