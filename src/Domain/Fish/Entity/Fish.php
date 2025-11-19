@@ -7,6 +7,7 @@ namespace App\Domain\Fish\Entity;
 use App\Domain\Fish\ValueObject\FishId;
 use App\Domain\Fish\ValueObject\Sex;
 use App\Domain\Fish\ValueObject\Species;
+use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\Age;
 use App\Domain\Shared\ValueObject\EntityName;
 use App\Domain\Shared\ValueObject\HealthPoints;
@@ -75,6 +76,6 @@ final class Fish
 
     public function isDead(): bool
     {
-        return $this->healthPoints->isDead();
+        return $this->healthPoints->isDead() || $this->age->toInt() >= GameRules::MAX_AGE;
     }
 }

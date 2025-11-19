@@ -154,4 +154,52 @@ final class FishTest extends TestCase
         // When & Then
         $this->assertFalse($fish->isDead());
     }
+
+    public function test_fish_dies_of_old_age_at_max_age(): void
+    {
+        // Given - Fish at max age with full health
+        $fish = new Fish(
+            FishId::generate(),
+            new EntityName('Old Nemo'),
+            Species::CLOWNFISH,
+            Sex::MALE,
+            new Age(GameRules::MAX_AGE),
+            HealthPoints::initial()
+        );
+
+        // When & Then
+        $this->assertTrue($fish->isDead());
+    }
+
+    public function test_fish_is_alive_one_turn_before_max_age(): void
+    {
+        // Given - Fish at MAX_AGE - 1 with full health
+        $fish = new Fish(
+            FishId::generate(),
+            new EntityName('Almost Old Nemo'),
+            Species::CLOWNFISH,
+            Sex::MALE,
+            new Age(GameRules::MAX_AGE - 1),
+            HealthPoints::initial()
+        );
+
+        // When & Then
+        $this->assertFalse($fish->isDead());
+    }
+
+    public function test_fish_dies_when_exceeding_max_age(): void
+    {
+        // Given - Fish older than MAX_AGE (edge case)
+        $fish = new Fish(
+            FishId::generate(),
+            new EntityName('Ancient Nemo'),
+            Species::CLOWNFISH,
+            Sex::MALE,
+            new Age(GameRules::MAX_AGE + 5),
+            HealthPoints::initial()
+        );
+
+        // When & Then
+        $this->assertTrue($fish->isDead());
+    }
 }

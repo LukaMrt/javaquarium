@@ -10,6 +10,9 @@ final class GameRules
 
     public const int MAX_HP = 10;
 
+    // Age and lifespan
+    public const int MAX_AGE = 20;
+
     // Hunger and turn mechanics
     public const int HUNGER_THRESHOLD = 5;
 

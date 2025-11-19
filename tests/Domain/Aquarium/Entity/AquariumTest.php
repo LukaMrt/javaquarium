@@ -289,4 +289,48 @@ final class AquariumTest extends TestCase
         $this->assertCount(1, $aquarium->getFishes());
         $this->assertSame($healthyFish, $aquarium->getFishes()[0]);
     }
+
+    public function test_advance_turn_removes_fish_that_dies_of_old_age(): void
+    {
+        // Given
+        $aquarium = new Aquarium(
+            AquariumId::generate(),
+            new EntityName('Test'),
+            TurnNumber::initial()
+        );
+
+        // Old fish at MAX_AGE - 1 (will become MAX_AGE after aging)
+        $oldFish = new Fish(
+            FishId::generate(),
+            new EntityName('Old Fish'),
+            Species::CLOWNFISH,
+            Sex::MALE,
+            new Age(GameRules::MAX_AGE - 1),
+            HealthPoints::initial()
+        );
+
+        // Young fish
+        $youngFish = new Fish(
+            FishId::generate(),
+            new EntityName('Young Fish'),
+            Species::BASS,
+            Sex::MALE,
+            new Age(5),
+            HealthPoints::initial()
+        );
+
+        $aquarium->addFish($oldFish);
+        $aquarium->addFish($youngFish);
+
+        $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
+        $randomGenerator->method('shuffle')->willReturnArgument(0);
+
+        // When
+        $aquarium->advanceTurn($randomGenerator, $this->createActionProvider($randomGenerator));
+
+        // Then - Old fish died and was removed, only young fish remains
+        $this->assertCount(1, $aquarium->getFishes());
+        $this->assertSame($youngFish, $aquarium->getFishes()[0]);
+        $this->assertSame(6, $youngFish->getAge()->toInt()); // Aged by 1
+    }
 }
