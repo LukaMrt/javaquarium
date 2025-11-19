@@ -14,6 +14,7 @@ use App\Domain\Fish\Entity\Fish;
 use App\Domain\Fish\ValueObject\FishId;
 use App\Domain\Fish\ValueObject\Sex;
 use App\Domain\Fish\ValueObject\Species;
+use App\Domain\Action\EntityActionProvider;
 use App\Domain\Service\CarnivorousFeedingStrategy;
 use App\Domain\Service\FeedingService;
 use App\Domain\Service\HerbivorousFeedingStrategy;
@@ -26,12 +27,14 @@ use PHPUnit\Framework\TestCase;
 
 final class AquariumTest extends TestCase
 {
-    private function createFeedingService(): FeedingService
+    private function createActionProvider(RandomGeneratorInterface $randomGenerator): EntityActionProvider
     {
-        return new FeedingService([
+        $feedingService = new FeedingService([
             new HerbivorousFeedingStrategy(),
             new CarnivorousFeedingStrategy(),
         ]);
+
+        return new EntityActionProvider($feedingService, $randomGenerator);
     }
 
     public function test_it_creates_empty_aquarium(): void
@@ -125,7 +128,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0); // Return input unchanged
 
         // When
-        $aquarium->advanceTurn($randomGenerator, $this->createFeedingService());
+        $aquarium->advanceTurn($randomGenerator, $this->createActionProvider($randomGenerator));
 
         // Then
         $this->assertSame(1, $aquarium->getTurnNumber()->toInt());
@@ -162,7 +165,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
-        $aquarium->advanceTurn($randomGenerator, $this->createFeedingService());
+        $aquarium->advanceTurn($randomGenerator, $this->createActionProvider($randomGenerator));
 
         // Then
         $this->assertSame(1, $fish->getAge()->toInt());
@@ -193,7 +196,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
-        $aquarium->advanceTurn($randomGenerator, $this->createFeedingService());
+        $aquarium->advanceTurn($randomGenerator, $this->createActionProvider($randomGenerator));
 
         // Then
         $this->assertSame(GameRules::INITIAL_HP - GameRules::FISH_HP_LOSS_PER_TURN, $fish->getHealthPoints()->toInt());
@@ -235,7 +238,7 @@ final class AquariumTest extends TestCase
             ->willReturn($algae);
 
         // When
-        $aquarium->advanceTurn($randomGenerator, $this->createFeedingService());
+        $aquarium->advanceTurn($randomGenerator, $this->createActionProvider($randomGenerator));
 
         // Then - Fish should have eaten algae
         // After hunger: 5 - 1 = 4, after eating: 4 + 3 = 7
@@ -280,7 +283,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
-        $aquarium->advanceTurn($randomGenerator, $this->createFeedingService());
+        $aquarium->advanceTurn($randomGenerator, $this->createActionProvider($randomGenerator));
 
         // Then - Only healthy fish remains
         $this->assertCount(1, $aquarium->getFishes());

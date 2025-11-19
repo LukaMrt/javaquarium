@@ -6,9 +6,9 @@ namespace App\Application\UseCase\Aquarium\AdvanceTurn;
 
 use App\Domain\Aquarium\Entity\Aquarium;
 use App\Application\Exception\AquariumNotFoundException;
+use App\Domain\Action\ActionProviderInterface;
 use App\Domain\Aquarium\Repository\AquariumRepositoryInterface;
 use App\Domain\Aquarium\ValueObject\AquariumId;
-use App\Domain\Service\FeedingService;
 use App\Domain\Service\RandomGeneratorInterface;
 use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 
@@ -18,7 +18,7 @@ final readonly class AdvanceTurnHandler
         private AquariumRepositoryInterface $aquariumRepository,
         private ObjectMapperInterface $objectMapper,
         private RandomGeneratorInterface $randomGenerator,
-        private FeedingService $feedingService,
+        private ActionProviderInterface $actionProvider,
     ) {
     }
 
@@ -30,7 +30,7 @@ final readonly class AdvanceTurnHandler
             throw new AquariumNotFoundException('Aquarium not found with ID: ' . $command->aquariumId);
         }
 
-        $aquarium->advanceTurn($this->randomGenerator, $this->feedingService);
+        $aquarium->advanceTurn($this->randomGenerator, $this->actionProvider);
 
         $this->aquariumRepository->save($aquarium);
 

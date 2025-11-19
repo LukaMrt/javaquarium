@@ -10,6 +10,7 @@ use App\Application\Exception\AquariumNotFoundException;
 use App\Application\UseCase\Aquarium\AdvanceTurn\AdvanceTurnCommand;
 use App\Application\UseCase\Aquarium\AdvanceTurn\AdvanceTurnHandler;
 use App\Domain\Aquarium\Fixtures\AquariumFixturesData;
+use App\Domain\Action\EntityActionProvider;
 use App\Domain\Aquarium\Repository\AquariumRepositoryInterface;
 use App\Domain\Aquarium\ValueObject\AquariumId;
 use App\Domain\Service\CarnivorousFeedingStrategy;
@@ -29,18 +30,21 @@ final class AdvanceTurnHandlerTest extends KernelTestCase
         self::bootKernel();
         $repository = self::getContainer()->get(AquariumRepositoryInterface::class);
         $mapper = self::getContainer()->get(ObjectMapperInterface::class);
+        /** @var RandomGeneratorInterface $randomGenerator */
         $randomGenerator = self::getContainer()->get(RandomGeneratorInterface::class);
-        $feedingService = new FeedingService([
-            new HerbivorousFeedingStrategy(),
-            new CarnivorousFeedingStrategy(),
-        ]);
 
         $this->assertInstanceOf(AquariumRepositoryInterface::class, $repository);
         $this->assertInstanceOf(ObjectMapperInterface::class, $mapper);
         $this->assertInstanceOf(RandomGeneratorInterface::class, $randomGenerator);
 
+        $feedingService = new FeedingService([
+            new HerbivorousFeedingStrategy(),
+            new CarnivorousFeedingStrategy(),
+        ]);
+        $actionProvider = new EntityActionProvider($feedingService, $randomGenerator);
+
         $this->repository = $repository;
-        $this->handler = new AdvanceTurnHandler($repository, $mapper, $randomGenerator, $feedingService);
+        $this->handler = new AdvanceTurnHandler($repository, $mapper, $randomGenerator, $actionProvider);
     }
 
     public function testItAdvancesTurn(): void
