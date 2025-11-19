@@ -30,9 +30,9 @@ enum Species: string
         return match ($this) {
             self::GROUPER => Diet::CARNIVOROUS,
             self::TUNA => Diet::CARNIVOROUS,
-            self::BASS => Diet::CARNIVOROUS,
-            self::CLOWNFISH => Diet::HERBIVOROUS,
+            self::CLOWNFISH => Diet::CARNIVOROUS,
             self::SOLE => Diet::HERBIVOROUS,
+            self::BASS => Diet::HERBIVOROUS,
             self::CARP => Diet::HERBIVOROUS,
         };
     }

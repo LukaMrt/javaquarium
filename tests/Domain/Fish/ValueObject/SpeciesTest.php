@@ -38,7 +38,7 @@ final class SpeciesTest extends TestCase
         $carnivorousSpecies = [
             Species::GROUPER,
             Species::TUNA,
-            Species::BASS,
+            Species::CLOWNFISH,
         ];
 
         // Then
@@ -51,7 +51,7 @@ final class SpeciesTest extends TestCase
     {
         // Given
         $herbivorousSpecies = [
-            Species::CLOWNFISH,
+            Species::BASS,
             Species::SOLE,
             Species::CARP,
         ];

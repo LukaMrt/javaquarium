@@ -14,6 +14,7 @@ use App\Domain\Fish\Entity\Fish;
 use App\Domain\Fish\ValueObject\FishId;
 use App\Domain\Fish\ValueObject\Sex;
 use App\Domain\Fish\ValueObject\Species;
+use App\Domain\Service\AlgaeGrowthService;
 use App\Domain\Service\RandomGeneratorInterface;
 use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\Age;
@@ -114,7 +115,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0); // Return input unchanged
 
         // When
-        $aquarium->advanceTurn($randomGenerator);
+        $aquarium->advanceTurn($randomGenerator, new AlgaeGrowthService());
 
         // Then
         $this->assertSame(1, $aquarium->getTurnNumber()->toInt());
@@ -151,7 +152,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
-        $aquarium->advanceTurn($randomGenerator);
+        $aquarium->advanceTurn($randomGenerator, new AlgaeGrowthService());
 
         // Then
         $this->assertSame(1, $fish->getAge()->toInt());
@@ -182,7 +183,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
-        $aquarium->advanceTurn($randomGenerator);
+        $aquarium->advanceTurn($randomGenerator, new AlgaeGrowthService());
 
         // Then
         $this->assertSame(GameRules::INITIAL_HP - GameRules::HP_LOSS_PER_TURN, $fish->getHealthPoints()->toInt());
@@ -201,7 +202,7 @@ final class AquariumTest extends TestCase
         $fish = new Fish(
             FishId::generate(),
             new EntityName('Nemo'),
-            Species::CLOWNFISH,
+            Species::CARP,
             Sex::MALE,
             Age::initial(),
             new HealthPoints(GameRules::HUNGER_THRESHOLD)
@@ -211,7 +212,7 @@ final class AquariumTest extends TestCase
             AlgaeId::generate(),
             new EntityName('Green Algae'),
             Age::initial(),
-            HealthPoints::initial()
+            new HealthPoints(5)
         );
 
         $aquarium->addFish($fish);
@@ -224,13 +225,13 @@ final class AquariumTest extends TestCase
             ->willReturn($algae);
 
         // When
-        $aquarium->advanceTurn($randomGenerator);
+        $aquarium->advanceTurn($randomGenerator, new AlgaeGrowthService());
 
         // Then - Fish should have eaten algae
         // After hunger: 5 - 1 = 4, after eating: 4 + 3 = 7
         $this->assertSame(GameRules::HUNGER_THRESHOLD - GameRules::HP_LOSS_PER_TURN + GameRules::HERBIVOROUS_HP_GAIN, $fish->getHealthPoints()->toInt());
-        // Algae loses 2 HP
-        $this->assertSame(GameRules::INITIAL_HP - GameRules::ALGAE_HP_LOSS_WHEN_EATEN, $algae->getHealthPoints()->toInt());
+        // Algae: 5 + 1 (growth) - 2 (eaten) = 4
+        $this->assertSame(4, $algae->getHealthPoints()->toInt());
     }
 
     public function test_advance_turn_removes_dead_entities(): void
@@ -269,7 +270,7 @@ final class AquariumTest extends TestCase
         $randomGenerator->method('shuffle')->willReturnArgument(0);
 
         // When
-        $aquarium->advanceTurn($randomGenerator);
+        $aquarium->advanceTurn($randomGenerator, new AlgaeGrowthService());
 
         // Then - Only healthy fish remains
         $this->assertCount(1, $aquarium->getFishes());

@@ -8,6 +8,7 @@ use App\Domain\Algae\Entity\Algae;
 use App\Domain\Aquarium\ValueObject\AquariumId;
 use App\Domain\Aquarium\ValueObject\TurnNumber;
 use App\Domain\Fish\Entity\Fish;
+use App\Domain\Service\AlgaeGrowthService;
 use App\Domain\Service\RandomGeneratorInterface;
 use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\EntityName;
@@ -68,18 +69,30 @@ final class Aquarium
         return $this->algae;
     }
 
-    public function advanceTurn(RandomGeneratorInterface $randomGenerator): void
-    {
+    public function advanceTurn(
+        RandomGeneratorInterface $randomGenerator,
+        AlgaeGrowthService $algaeGrowthService
+    ): void {
         // Shuffle order to randomize processing
         $this->fishes = $randomGenerator->shuffle($this->fishes);
         $this->algae = $randomGenerator->shuffle($this->algae);
 
-        // Phase 1: Age all entities
+        // Phase 1: Age all entities & Algae growth
         foreach ($this->fishes as $fish) {
             $fish->age();
         }
+
+        $newAlgaeList = [];
         foreach ($this->algae as $algae) {
             $algae->age();
+            $offspring = $algaeGrowthService->grow($algae);
+            if ($offspring instanceof Algae) {
+                $newAlgaeList[] = $offspring;
+            }
+        }
+
+        foreach ($newAlgaeList as $newAlgae) {
+            $this->addAlgae($newAlgae);
         }
 
         // Phase 2: Apply hunger to all fish

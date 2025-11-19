@@ -24,4 +24,9 @@ final class GameRules
     public const int FISH_HP_LOSS_WHEN_ATTACKED = 4;
     
     public const int ALGAE_HP_LOSS_WHEN_EATEN = 2;
+
+    // Algae growth
+    public const int ALGAE_GROWTH_HP = 1;
+    
+    public const int ALGAE_SPLIT_THRESHOLD = 10;
 }
