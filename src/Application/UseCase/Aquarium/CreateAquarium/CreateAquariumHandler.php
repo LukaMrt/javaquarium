@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Aquarium\CreateAquarium;
 
+use App\Application\Exception\ValidationException;
 use App\Domain\Aquarium\Entity\Aquarium;
 use App\Domain\Aquarium\Repository\AquariumRepositoryInterface;
 use App\Domain\Aquarium\ValueObject\AquariumId;
 use App\Domain\Aquarium\ValueObject\TurnNumber;
 use App\Domain\Shared\ValueObject\EntityName;
 use Symfony\Component\ObjectMapper\ObjectMapperInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class CreateAquariumHandler
 {
     public function __construct(
         private AquariumRepositoryInterface $aquariumRepository,
         private ObjectMapperInterface $objectMapper,
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -33,6 +36,12 @@ final readonly class CreateAquariumHandler
             new EntityName($command->name),
             new TurnNumber(0),
         );
+
+        // Validate the created aquarium entity
+        $violations = $this->validator->validate($aquarium);
+        if (count($violations) > 0) {
+            throw new ValidationException($violations, 'Aquarium validation failed');
+        }
 
         $this->aquariumRepository->save($aquarium);
 

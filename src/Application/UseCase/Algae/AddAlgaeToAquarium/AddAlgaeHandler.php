@@ -6,6 +6,7 @@ namespace App\Application\UseCase\Algae\AddAlgaeToAquarium;
 
 use App\Domain\Aquarium\Entity\Aquarium;
 use App\Application\Exception\AquariumNotFoundException;
+use App\Application\Exception\ValidationException;
 use App\Domain\Algae\Entity\Algae;
 use App\Domain\Algae\ValueObject\AlgaeId;
 use App\Domain\Aquarium\Repository\AquariumRepositoryInterface;
@@ -14,12 +15,14 @@ use App\Domain\Shared\ValueObject\Age;
 use App\Domain\Shared\ValueObject\EntityName;
 use App\Domain\Shared\ValueObject\HealthPoints;
 use Symfony\Component\ObjectMapper\ObjectMapperInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class AddAlgaeHandler
 {
     public function __construct(
         private AquariumRepositoryInterface $aquariumRepository,
         private ObjectMapperInterface $objectMapper,
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -37,6 +40,12 @@ final readonly class AddAlgaeHandler
             Age::initial(),
             HealthPoints::initial(),
         );
+
+        // Validate the created algae entity
+        $violations = $this->validator->validate($algae);
+        if (count($violations) > 0) {
+            throw new ValidationException($violations, 'Algae validation failed');
+        }
 
         $aquarium->addAlgae($algae);
         $this->aquariumRepository->save($aquarium);

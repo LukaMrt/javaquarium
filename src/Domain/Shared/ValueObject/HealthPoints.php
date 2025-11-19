@@ -5,10 +5,17 @@ declare(strict_types=1);
 namespace App\Domain\Shared\ValueObject;
 
 use App\Domain\Shared\GameRules;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\Cascade]
 final readonly class HealthPoints
 {
     public function __construct(
+        #[Assert\Range(
+            notInRangeMessage: 'Health points must be between {{ min }} and {{ max }}, got {{ value }}',
+            min: 0,
+            max: GameRules::MAX_HP
+        )]
         private int $value
     ) {
     }

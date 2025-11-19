@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Aquarium\ValueObject;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[Assert\Cascade]
 final readonly class TurnNumber
 {
     public function __construct(
+        #[Assert\PositiveOrZero(message: 'Turn number must be positive or zero, got {{ value }}')]
         private int $value
     ) {
     }

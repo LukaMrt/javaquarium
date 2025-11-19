@@ -14,6 +14,7 @@ use App\Domain\Aquarium\Fixtures\AquariumFixturesData;
 use App\Domain\Aquarium\Repository\AquariumRepositoryInterface;
 use App\Domain\Aquarium\ValueObject\AquariumId;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class AddAlgaeHandlerTest extends KernelTestCase
 {
@@ -26,12 +27,14 @@ final class AddAlgaeHandlerTest extends KernelTestCase
         self::bootKernel();
         $repository = self::getContainer()->get(AquariumRepositoryInterface::class);
         $mapper = self::getContainer()->get(ObjectMapperInterface::class);
+        $validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->assertInstanceOf(AquariumRepositoryInterface::class, $repository);
         $this->assertInstanceOf(ObjectMapperInterface::class, $mapper);
+        $this->assertInstanceOf(ValidatorInterface::class, $validator);
 
         $this->repository = $repository;
-        $this->handler = new AddAlgaeHandler($repository, $mapper);
+        $this->handler = new AddAlgaeHandler($repository, $mapper, $validator);
     }
 
     public function testItAddsAlgaeToAquarium(): void

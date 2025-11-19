@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Shared\ValueObject;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[Assert\Cascade]
 final readonly class Age
 {
     private const int INITIAL_AGE = 0;
 
     public function __construct(
+        #[Assert\PositiveOrZero(message: 'Age must be positive or zero, got {{ value }}')]
         private int $value
     ) {
     }

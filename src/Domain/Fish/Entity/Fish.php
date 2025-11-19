@@ -11,7 +11,9 @@ use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\Age;
 use App\Domain\Shared\ValueObject\EntityName;
 use App\Domain\Shared\ValueObject\HealthPoints;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\Cascade]
 final class Fish
 {
     public function __construct(

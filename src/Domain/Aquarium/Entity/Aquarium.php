@@ -12,7 +12,9 @@ use App\Domain\Fish\Entity\Fish;
 use App\Domain\Service\RandomGeneratorInterface;
 use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\EntityName;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\Cascade]
 final class Aquarium
 {
     /**

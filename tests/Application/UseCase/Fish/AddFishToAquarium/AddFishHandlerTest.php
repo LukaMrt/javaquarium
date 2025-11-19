@@ -16,6 +16,7 @@ use App\Domain\Fish\ValueObject\FishId;
 use App\Domain\Fish\ValueObject\Sex;
 use App\Domain\Fish\ValueObject\Species;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class AddFishHandlerTest extends KernelTestCase
 {
@@ -28,12 +29,14 @@ final class AddFishHandlerTest extends KernelTestCase
         self::bootKernel();
         $repository = self::getContainer()->get(AquariumRepositoryInterface::class);
         $mapper = self::getContainer()->get(ObjectMapperInterface::class);
+        $validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->assertInstanceOf(AquariumRepositoryInterface::class, $repository);
         $this->assertInstanceOf(ObjectMapperInterface::class, $mapper);
+        $this->assertInstanceOf(ValidatorInterface::class, $validator);
 
         $this->repository = $repository;
-        $this->handler = new AddFishHandler($repository, $mapper);
+        $this->handler = new AddFishHandler($repository, $mapper, $validator);
     }
 
     public function testItAddsFishToAquarium(): void
