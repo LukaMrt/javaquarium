@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Action;
 use App\Domain\Action\AlgaeGrowAction;
 use App\Domain\Action\EntityActionProvider;
 use App\Domain\Action\FishFeedAction;
+use App\Domain\Action\FishReproduceAction;
 use App\Domain\Algae\Entity\Algae;
 use App\Domain\Algae\ValueObject\AlgaeId;
 use App\Domain\Aquarium\Entity\Aquarium;
@@ -19,7 +20,11 @@ use App\Domain\Fish\ValueObject\Species;
 use App\Domain\Service\CarnivorousFeedingStrategy;
 use App\Domain\Service\FeedingService;
 use App\Domain\Service\HerbivorousFeedingStrategy;
+use App\Domain\Service\MonosexualReproductionStrategy;
+use App\Domain\Service\OpportunisticReproductionStrategy;
+use App\Domain\Service\ProtandrousReproductionStrategy;
 use App\Domain\Service\RandomGeneratorInterface;
+use App\Domain\Service\ReproductionService;
 use App\Domain\Shared\ValueObject\Age;
 use App\Domain\Shared\ValueObject\EntityName;
 use App\Domain\Shared\ValueObject\HealthPoints;
@@ -36,9 +41,15 @@ final class EntityActionProviderTest extends TestCase
             new CarnivorousFeedingStrategy(),
         ]);
 
+        $reproductionService = new ReproductionService([
+            new MonosexualReproductionStrategy(),
+            new ProtandrousReproductionStrategy(),
+            new OpportunisticReproductionStrategy(),
+        ]);
+
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
 
-        $this->provider = new EntityActionProvider($feedingService, $randomGenerator);
+        $this->provider = new EntityActionProvider($feedingService, $reproductionService, $randomGenerator);
     }
 
     public function test_it_creates_algae_grow_action_for_algae(): void
@@ -65,7 +76,7 @@ final class EntityActionProviderTest extends TestCase
         $this->assertInstanceOf(AlgaeGrowAction::class, $actions[0]);
     }
 
-    public function test_it_creates_fish_feed_action_for_fish(): void
+    public function test_it_creates_fish_feed_action_for_hungry_fish(): void
     {
         // Given
         $aquarium = new Aquarium(
@@ -80,7 +91,7 @@ final class EntityActionProviderTest extends TestCase
             Species::SOLE,
             Sex::MALE,
             Age::initial(),
-            HealthPoints::initial()
+            new HealthPoints(5) // Hungry (HP <= 5)
         );
 
         // When
@@ -89,6 +100,32 @@ final class EntityActionProviderTest extends TestCase
         // Then
         $this->assertCount(1, $actions);
         $this->assertInstanceOf(FishFeedAction::class, $actions[0]);
+    }
+
+    public function test_it_creates_fish_reproduce_action_for_well_fed_fish(): void
+    {
+        // Given
+        $aquarium = new Aquarium(
+            AquariumId::generate(),
+            new EntityName('Test'),
+            TurnNumber::initial()
+        );
+
+        $fish = new Fish(
+            FishId::generate(),
+            new EntityName('Fish'),
+            Species::SOLE,
+            Sex::MALE,
+            new Age(3), // Old enough to reproduce
+            HealthPoints::initial() // Not hungry (HP = 10)
+        );
+
+        // When
+        $actions = $this->provider->getActionsFor($fish, $aquarium);
+
+        // Then
+        $this->assertCount(1, $actions);
+        $this->assertInstanceOf(FishReproduceAction::class, $actions[0]);
     }
 
     public function test_it_returns_empty_array_for_unknown_entity_type(): void

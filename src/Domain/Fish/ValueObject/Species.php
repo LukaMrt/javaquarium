@@ -28,12 +28,17 @@ enum Species: string
     public function getDiet(): Diet
     {
         return match ($this) {
-            self::GROUPER => Diet::CARNIVOROUS,
-            self::TUNA => Diet::CARNIVOROUS,
-            self::CLOWNFISH => Diet::CARNIVOROUS,
-            self::SOLE => Diet::HERBIVOROUS,
-            self::BASS => Diet::HERBIVOROUS,
-            self::CARP => Diet::HERBIVOROUS,
+            self::GROUPER, self::TUNA, self::CLOWNFISH => Diet::CARNIVOROUS,
+            self::SOLE, self::BASS, self::CARP => Diet::HERBIVOROUS,
+        };
+    }
+
+    public function getSexualBehavior(): SexualBehaviorType
+    {
+        return match ($this) {
+            self::CARP, self::TUNA => SexualBehaviorType::MONOSEXUAL,
+            self::BASS, self::GROUPER => SexualBehaviorType::PROTANDROUS,
+            self::SOLE, self::CLOWNFISH => SexualBehaviorType::OPPORTUNISTIC,
         };
     }
 }

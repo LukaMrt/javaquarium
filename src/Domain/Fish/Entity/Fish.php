@@ -20,7 +20,7 @@ final class Fish
         private readonly FishId $id,
         private readonly EntityName $name,
         private readonly Species $species,
-        private readonly Sex $sex,
+        private Sex $sex,
         private Age $age,
         private HealthPoints $healthPoints
     ) {
@@ -79,5 +79,10 @@ final class Fish
     public function isDead(): bool
     {
         return $this->healthPoints->isDead() || $this->age->toInt() >= GameRules::MAX_AGE;
+    }
+
+    public function setSex(Sex $sex): void
+    {
+        $this->sex = $sex;
     }
 }

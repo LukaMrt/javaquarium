@@ -18,7 +18,11 @@ use App\Domain\Action\EntityActionProvider;
 use App\Domain\Service\CarnivorousFeedingStrategy;
 use App\Domain\Service\FeedingService;
 use App\Domain\Service\HerbivorousFeedingStrategy;
+use App\Domain\Service\MonosexualReproductionStrategy;
+use App\Domain\Service\OpportunisticReproductionStrategy;
+use App\Domain\Service\ProtandrousReproductionStrategy;
 use App\Domain\Service\RandomGeneratorInterface;
+use App\Domain\Service\ReproductionService;
 use App\Domain\Shared\GameRules;
 use App\Domain\Shared\ValueObject\Age;
 use App\Domain\Shared\ValueObject\EntityName;
@@ -34,7 +38,13 @@ final class AquariumTest extends TestCase
             new CarnivorousFeedingStrategy(),
         ]);
 
-        return new EntityActionProvider($feedingService, $randomGenerator);
+        $reproductionService = new ReproductionService([
+            new MonosexualReproductionStrategy(),
+            new ProtandrousReproductionStrategy(),
+            new OpportunisticReproductionStrategy(),
+        ]);
+
+        return new EntityActionProvider($feedingService, $reproductionService, $randomGenerator);
     }
 
     public function test_it_creates_empty_aquarium(): void

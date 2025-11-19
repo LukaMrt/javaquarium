@@ -13,6 +13,8 @@ final class GameRules
     // Age and lifespan
     public const int MAX_AGE = 20;
 
+    public const int MIN_REPRODUCTION_AGE = 2;
+
     // Hunger and turn mechanics
     public const int HUNGER_THRESHOLD = 5;
 

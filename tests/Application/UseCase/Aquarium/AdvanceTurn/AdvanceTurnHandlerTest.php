@@ -16,7 +16,11 @@ use App\Domain\Aquarium\ValueObject\AquariumId;
 use App\Domain\Service\CarnivorousFeedingStrategy;
 use App\Domain\Service\FeedingService;
 use App\Domain\Service\HerbivorousFeedingStrategy;
+use App\Domain\Service\MonosexualReproductionStrategy;
+use App\Domain\Service\OpportunisticReproductionStrategy;
+use App\Domain\Service\ProtandrousReproductionStrategy;
 use App\Domain\Service\RandomGeneratorInterface;
+use App\Domain\Service\ReproductionService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class AdvanceTurnHandlerTest extends KernelTestCase
@@ -41,7 +45,14 @@ final class AdvanceTurnHandlerTest extends KernelTestCase
             new HerbivorousFeedingStrategy(),
             new CarnivorousFeedingStrategy(),
         ]);
-        $actionProvider = new EntityActionProvider($feedingService, $randomGenerator);
+
+        $reproductionService = new ReproductionService([
+            new MonosexualReproductionStrategy(),
+            new ProtandrousReproductionStrategy(),
+            new OpportunisticReproductionStrategy(),
+        ]);
+
+        $actionProvider = new EntityActionProvider($feedingService, $reproductionService, $randomGenerator);
 
         $this->repository = $repository;
         $this->handler = new AdvanceTurnHandler($repository, $mapper, $randomGenerator, $actionProvider);
